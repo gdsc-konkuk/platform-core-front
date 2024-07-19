@@ -1,4 +1,5 @@
-import MainLayout from '@/features/main-layout/MainLayout';
+import Login from '@/features/login/components/Login';
+import MainLayout from '@/features/main-layout/components/MainLayout';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const routes = (isLoggedIn: boolean) => [
@@ -22,7 +23,7 @@ const routes = (isLoggedIn: boolean) => [
     children: [
       {
         path: 'login',
-        element: <h1>login</h1>,
+        element: <Login />,
       },
       {
         index: true,
