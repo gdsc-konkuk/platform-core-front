@@ -1,12 +1,10 @@
-import { Button } from '@/components/ui/button';
+import { useRoutes } from 'react-router-dom';
+import routes from './routes';
 
-function App() {
-  return (
-    <main>
-      <h1 className="text-4xl text-red-500">Hello World</h1>
-      <Button variant="destructive">Jenkins Test</Button>
-    </main>
-  );
+export default function App() {
+  const isLoggednIn = true;
+
+  const routing = useRoutes(routes(isLoggednIn));
+
+  return <>{routing}</>;
 }
-
-export default App;
