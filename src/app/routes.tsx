@@ -15,6 +15,18 @@ const routes = (isLoggedIn: boolean) => [
         path: 'attendance',
         element: <h1>Attendance</h1>,
       },
+      {
+        path: 'status',
+        element: <h1>Status</h1>,
+      },
+      {
+        path: 'mail',
+        element: <h1>Mail</h1>,
+      },
+      {
+        path: 'session',
+        element: <h1>Session</h1>,
+      },
     ],
   },
   {
