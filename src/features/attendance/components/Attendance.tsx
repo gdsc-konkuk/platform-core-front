@@ -18,7 +18,9 @@ export default function Attendance() {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-[24px] font-extrabold">출석</h1>
+        <h1 className="font-['NanumSquareRoundEB'] text-[24px] font-extrabold">
+          출석
+        </h1>
         <div>
           <select
             value={currentDate.year()}
@@ -52,7 +54,7 @@ export default function Attendance() {
       </div>
 
       <div className="grid grid-cols-7 gap-2">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+        {['월', '화', '수', '목', '금', '토', '일'].map((day) => (
           <div key={day} className="text-center font-bold">
             {day}
           </div>
