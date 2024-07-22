@@ -1,3 +1,4 @@
+import Attendance from '@/features/attendance/components/Attendance';
 import Login from '@/features/login/components/Login';
 import MainLayout from '@/features/main-layout/components/MainLayout';
 import { Navigate, Outlet } from 'react-router-dom';
@@ -13,7 +14,7 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: 'attendance',
-        element: <h1>Attendance</h1>,
+        element: <Attendance />,
       },
       {
         path: 'status',
