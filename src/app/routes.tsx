@@ -1,5 +1,6 @@
 import Login from '@/features/login/components/Login';
 import MainLayout from '@/features/main-layout/components/MainLayout';
+import SessionManagement from '@/features/session-management/components/SessionManagement';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const routes = (isLoggedIn: boolean) => [
@@ -25,7 +26,7 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: 'session',
-        element: <h1>Session</h1>,
+        element: <SessionManagement />,
       },
     ],
   },
