@@ -75,6 +75,7 @@ const config = {
       fontFamily: {
         suite: ['SUITE'],
         pretendard: ['Pretendard'],
+        nanum: ['NanumSquareRound'],
       },
     },
   },
