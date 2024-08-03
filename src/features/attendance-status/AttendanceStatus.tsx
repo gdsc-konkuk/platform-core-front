@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
+
+import checkboxEmptyIcon from '/icons/checkbox-empty.svg';
+
+import checkboxFullIcon from '/icons/checkbox-full.svg';
+
 import {
   Select,
   SelectContent,
@@ -10,28 +15,6 @@ import {
 } from '@/components/ui/select';
 
 dayjs.extend(localeData);
-
-interface AttendanceRecord {
-  name: string;
-  department: string;
-  role: string;
-  attendance: Record<string, boolean>;
-}
-
-const initialRecords: AttendanceRecord[] = [
-  {
-    name: '이영지',
-    department: '스마트ICT융합공학과',
-    role: 'Member',
-    attendance: {
-      '02': false,
-      '09': false,
-      '16': false,
-      '23': false,
-      '29': false,
-    },
-  },
-];
 
 interface AttendanceInfo {
   attendanceId: number;
@@ -151,6 +134,435 @@ const testMember: Member[] = [
       },
     ],
   },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
+  {
+    memberId: 0,
+    memberName: '홍길동',
+    memberRole: 'MEMBER',
+    profileImageUrl: null,
+    department: '컴퓨터공학과',
+    attendanceInfoList: [
+      {
+        attendanceId: 1,
+        eventId: 1,
+        memberId: 0,
+        participantId: 1,
+        attendanceDate: '2024-07-03T00:00:00',
+        attendance: true,
+      },
+      {
+        attendanceId: 2,
+        eventId: 2,
+        memberId: 0,
+        participantId: 2,
+        attendanceDate: '2024-07-05T00:00:00',
+        attendance: false,
+      },
+      {
+        attendanceId: 3,
+        eventId: 3,
+        memberId: 0,
+        participantId: 3,
+        attendanceDate: '2024-07-08T00:00:00',
+        attendance: true,
+      },
+    ],
+  },
 ];
 
 const AttendanceStatus: React.FC = () => {
@@ -161,21 +573,17 @@ const AttendanceStatus: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState(currentDate.year());
   const [selectedMonth, setSelectedMonth] = useState(currentDate.month());
 
-  const handleAttendanceChange = (
-    index: number,
-    listIndex: number,
-    attendanceInfo: AttendanceInfo,
-  ) => {
+  const handleAttendanceChange = (index: number, listIndex: number) => {
     const newRecords = [...records];
     newRecords[index].attendanceInfoList[listIndex].attendance =
       !newRecords[index].attendanceInfoList[listIndex].attendance;
     setRecords(newRecords);
   };
 
-  const getTotalAttendance = (attendance: Record<string, boolean>) => {
-    const totalEvents = Object.keys(attendance).length;
-    const attendedEvents = Object.values(attendance).filter(
-      (status) => status,
+  const getTotalAttendance = (attendanceInfoList: AttendanceInfo[]) => {
+    const totalEvents = attendanceInfoList.length;
+    const attendedEvents = attendanceInfoList.filter(
+      (item) => item.attendance,
     ).length;
     return `${attendedEvents} / ${totalEvents}`;
   };
@@ -192,88 +600,143 @@ const AttendanceStatus: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex justify-start items-center mb-4">
-          <Select onValueChange={handleYearChange}>
-            <SelectTrigger className="w-[110px] mr-2 text-[#171719] font-[Pretendard] text-[22px] font-[600]">
-              <SelectValue placeholder={selectedYear} />
-            </SelectTrigger>
-            <SelectContent className="text-[#171719] font-[Pretendard] text-[22px] font-[600]">
-              {Array.from({ length: 10 }, (_, i) => (
-                <SelectItem key={i} value={(dayjs().year() - 5 + i).toString()}>
-                  {dayjs().year() - 5 + i}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select onValueChange={handleMonthChange}>
-            <SelectTrigger className="w-[80px] mr-2 text-[#171719] font-[Pretendard] text-[22px] font-[600]">
-              <SelectValue placeholder={selectedMonth + 1} />
-            </SelectTrigger>
-            <SelectContent className="mr-2 text-[#171719] font-[Pretendard] text-[22px] font-[600]">
-              {Array.from({ length: 12 }, (_, i) => (
-                <SelectItem key={i} value={i.toString()}>
-                  {i + 1}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <>
+      <div className="p-4 border w-[1008px] h-[85vh] rounded-[20px]">
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-start items-center mb-4">
+            <Select onValueChange={handleYearChange}>
+              <SelectTrigger className="w-[110px] mr-2 text-[#171719] font-[Pretendard] text-[22px] font-[600]">
+                <SelectValue placeholder={selectedYear} />
+              </SelectTrigger>
+              <SelectContent className="text-[#171719] font-[Pretendard] text-[22px] font-[600]">
+                {Array.from({ length: 10 }, (_, i) => (
+                  <SelectItem
+                    key={i}
+                    value={(dayjs().year() - 5 + i).toString()}
+                  >
+                    {dayjs().year() - 5 + i}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select onValueChange={handleMonthChange}>
+              <SelectTrigger className="w-[80px] mr-2 text-[#171719] font-[Pretendard] text-[22px] font-[600]">
+                <SelectValue placeholder={selectedMonth + 1} />
+              </SelectTrigger>
+              <SelectContent className="mr-2 text-[#171719] font-[Pretendard] text-[22px] font-[600]">
+                {Array.from({ length: 12 }, (_, i) => (
+                  <SelectItem key={i} value={i.toString()}>
+                    {i + 1}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-        <button
-          onClick={() => setIsEditing(!isEditing)}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          {isEditing ? 'Save' : 'Edit'}
-        </button>
-      </div>
-      <table className="w-full table-auto">
-        <thead>
-          <tr>
-            <th className="px-4 py-2">이름</th>
-            <th className="px-4 py-2">학과</th>
-            <th className="px-4 py-2">결과</th>
-            <th className="px-4 py-2">역할</th>
-            {records[0].attendanceInfoList.map((attendanceInfo) => (
-              <th key={attendanceInfo.attendanceDate} className="px-4 py-2">
-                {attendanceInfo.attendanceDate.substring(8, 10)}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {records.map((record, index) => (
-            <tr key={index} className="border-t">
-              <td className="px-4 py-2">{record.memberName}</td>
-              <td className="px-4 py-2">{record.department}</td>
-              <td className="px-4 py-2">5</td>
-              <td className="px-4 py-2">{record.memberRole}</td>
-              {record.attendanceInfoList.map((attendanceInfo, listIndex) => (
-                <td
-                  key={attendanceInfo.attendanceId}
-                  className="px-4 py-2 text-center"
+          <div className="flex gap-4">
+            {isEditing ? (
+              <button
+                onClick={() => setIsEditing(!isEditing)}
+                className="bg-white text-[#0DAA5C] font-[500] px-[20px] py-[9px] border border-[#0DAA5C] rounded-[8px]"
+              >
+                저장
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsEditing(!isEditing)}
+                className="bg-white text-[#171719] font-[500] px-[20px] py-[9px] border border-[var(--grey-6,#BEBEBF)] rounded-[8px]"
+              >
+                수정
+              </button>
+            )}
+            <button
+              disabled
+              className="bg-white text-[#BEBEBF] font-[500] px-[20px] py-[9px] border border-[var(--grey-6,#BEBEBF)] rounded-[8px]"
+            >
+              Export
+            </button>
+          </div>
+        </div>
+        <div className="overflow-y-auto h-[70vh]">
+          <table className="w-full table-auto">
+            <thead>
+              <tr className="text-left">
+                <th className="px-4 py-2">이름</th>
+                <th className="px-4 py-2">학과</th>
+                <th className="px-4 py-2">결과</th>
+                <th className="px-4 py-2">역할</th>
+                {records[0].attendanceInfoList.map((attendanceInfo) => (
+                  <th key={attendanceInfo.attendanceDate} className="px-4 py-2">
+                    {attendanceInfo.attendanceDate.substring(8, 10)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody className=" border-t">
+              {records.map((record, index) => (
+                <tr
+                  key={index}
+                  className="text-[#333335] font-pretendard text-base font-semibold"
                 >
-                  {isEditing ? (
-                    <input
-                      type="checkbox"
-                      checked={attendanceInfo.attendance}
-                      onChange={() =>
-                        handleAttendanceChange(index, listIndex, attendanceInfo)
-                      }
-                    />
-                  ) : attendanceInfo.attendance ? (
-                    '✓'
-                  ) : (
-                    '✗'
+                  <td className="px-4 py-2">{record.memberName}</td>
+                  <td className="px-4 py-2">{record.department}</td>
+                  <td className="px-4 py-2">
+                    {getTotalAttendance(record.attendanceInfoList)}
+                  </td>
+                  <td className="px-4 py-2">{record.memberRole}</td>
+                  {record.attendanceInfoList.map(
+                    (attendanceInfo, listIndex) => (
+                      <td
+                        key={attendanceInfo.attendanceId}
+                        className="px-4 py-2 text-center"
+                      >
+                        {/* 수정상태일 때 */}
+                        <div className="flex ">
+                          {isEditing ? (
+                            <div>
+                              <input
+                                type="checkbox"
+                                id={`check+${index}${listIndex}`}
+                                className="w-[20px] h-[20px] hidden"
+                                checked={attendanceInfo.attendance}
+                                onChange={() =>
+                                  handleAttendanceChange(index, listIndex)
+                                }
+                              />
+                              <label
+                                htmlFor={`check+${index}${listIndex}`}
+                                className="block"
+                              >
+                                {attendanceInfo.attendance ? (
+                                  <img
+                                    src={checkboxFullIcon}
+                                    alt="checkboxFullIcon"
+                                  />
+                                ) : (
+                                  <img
+                                    src={checkboxEmptyIcon}
+                                    alt="checkboxEmptyIcon"
+                                  />
+                                )}
+                              </label>
+                            </div>
+                          ) : attendanceInfo.attendance ? (
+                            'o'
+                          ) : (
+                            'x'
+                          )}
+                        </div>
+                      </td>
+                    ),
                   )}
-                </td>
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   );
 };
 
