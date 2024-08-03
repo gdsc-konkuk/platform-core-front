@@ -1,3 +1,4 @@
+import AttendanceStatus from '@/features/attendance-status/AttendanceStatus';
 import Attendance from '@/features/attendance/components/Attendance';
 import Login from '@/features/login/components/Login';
 import MainLayout from '@/features/main-layout/components/MainLayout';
@@ -18,7 +19,7 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: 'status',
-        element: <h1>Status</h1>,
+        element: <AttendanceStatus />,
       },
       {
         path: 'mail',
