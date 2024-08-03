@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import CreateSessionDialog from './CreateSessionDialog';
 
 const sessionData = [
   {
@@ -62,9 +62,7 @@ export default function SessionManagement() {
   return (
     <div className="flex h-full w-full flex-col">
       <h1 className="font-nanum text-[24px]">세션 운영/관리</h1>
-      <Button className="mt-3 h-[50px] w-[135px] self-end rounded-[10px] border border-primary bg-white px-7 py-3 text-[17px] font-semibold text-primary hover:text-white">
-        이벤트 생성
-      </Button>
+      <CreateSessionDialog />
       <div className="mt-[60px] overflow-scroll scrollbar-hide">
         <div className="grid grid-flow-row grid-auto-fit gap-[22px]">
           {sessionData.map((data) => (
