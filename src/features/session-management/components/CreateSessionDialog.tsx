@@ -72,6 +72,9 @@ export default function CreateSessionDialog() {
               />
             </div>
 
+            <div className="flex flex-col gap-[18px]">
+              <h1 className="font-semibold text-[#171719] text-[18px]">사진</h1>
+              <ImageUpload />
             </div>
           </DialogDescription>
         </DialogHeader>
