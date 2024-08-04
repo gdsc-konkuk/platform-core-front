@@ -1,4 +1,4 @@
-import CreateSessionDialog from './CreateSessionDialog';
+import CreateSessionDialog from './create-session-dialog/CreateSessionDialog';
 
 const sessionData = [
   {

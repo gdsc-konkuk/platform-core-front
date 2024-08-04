@@ -86,7 +86,7 @@ export default function DateTimePicker({
             </div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="p-0 w-[124px] h-[300px] overflow-y-scroll scrollbar scrollbar-thumb-[#DBDBDE] scrollbar-track-white">
+        <DropdownMenuContent className="p-0 w-[124px] h-[300px] overflow-y-scroll scrollbar scrollbar-thumb-[#DBDBDE] scrollbar-track-transparent">
           {[...Array(24)].map((_, index) => (
             <DropdownMenuItem
               key={index}
@@ -120,7 +120,7 @@ export default function DateTimePicker({
             </div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="p-0 w-[124px] h-[300px] overflow-y-scroll scrollbar scrollbar-thumb-[#DBDBDE] scrollbar-track-white">
+        <DropdownMenuContent className="p-0 w-[124px] h-[300px] overflow-y-scroll scrollbar scrollbar-thumb-[#DBDBDE] scrollbar-track-transparent">
           {[...Array(12)].map((_, index) => {
             const minuteValue = index * 5;
             const displayValue =
