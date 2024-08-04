@@ -3,6 +3,7 @@ import CloseGrayIcon from '/icons/close-gray.svg';
 import { MouseEvent, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import SessionDeleteDialog from './SessionDeleteDialog';
 
 interface SessionModalProps {
   card: Card;
@@ -42,18 +43,22 @@ export default function SessionModal({ card, onClose }: SessionModalProps) {
               <Button className="px-5 py-[9px] bg-white text-black border border-[#BEBEBF] hover:bg-[#BEBEBF]">
                 수정
               </Button>
-              <Button className="px-5 py-[9px] bg-white text-black border border-[#BEBEBF] hover:bg-[#BEBEBF]">
-                삭제
-              </Button>
+              <SessionDeleteDialog>
+                <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-black hover:bg-[#BEBEBF]">
+                  삭제
+                </Button>
+              </SessionDeleteDialog>
             </>
           ) : (
             <>
               <Button className="px-5 py-[9px] bg-white text-primary border border-primary hover:bg-[#BEBEBF]">
                 작성
               </Button>
-              <Button className="px-5 py-[9px] bg-white text-[#BEBEBF] border border-[#BEBEBF] hover:bg-[#BEBEBF]">
-                삭제
-              </Button>
+              <SessionDeleteDialog>
+                <Button className="hover:text-white px-5 py-[9px] bg-white text-[#BEBEBF] border border-[#BEBEBF] hover:bg-[#BEBEBF]">
+                  삭제
+                </Button>
+              </SessionDeleteDialog>
             </>
           )}
         </div>
