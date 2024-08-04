@@ -4,6 +4,7 @@ import { MouseEvent, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import SessionDeleteDialog from './SessionDeleteDialog';
+import RetrospectionDialog from './RetrospectionDialog';
 
 interface SessionModalProps {
   card: Card;
@@ -21,26 +22,26 @@ export default function SessionModal({ card, onClose }: SessionModalProps) {
 
   return (
     <div
-      className="absolute top-0 left-0 w-full h-full z-10"
+      className="absolute left-0 top-0 z-10 h-full w-full"
       onClick={handleBackgroundClick}
     >
-      <div className="z-50 bg-white flex flex-col absolute top-0 right-0 h-screen w-[70vw] px-8 py-12 rounded-3xl shadow-[-1px_0_10px_1px_rgba(0,0,0,0.3)]">
+      <div className="absolute right-0 top-0 z-50 flex h-screen w-[70vw] flex-col rounded-3xl bg-white px-8 py-12 shadow-[-1px_0_10px_1px_rgba(0,0,0,0.3)]">
         <img
           src={CloseGrayIcon}
           alt="close"
-          className="w-6 h-6 cursor-pointer self-end"
+          className="h-6 w-6 cursor-pointer self-end"
           onClick={onClose}
         />
 
-        <h1 className="font-nanum font-extrabold text-[24px] text-[#333335] mt-[18px]">
+        <h1 className="mt-[18px] font-nanum text-[24px] font-extrabold text-[#333335]">
           {card.title}
         </h1>
-        <span className="text[14px] text-[#868687] mt-[10px]">{card.date}</span>
+        <span className="text[14px] mt-[10px] text-[#868687]">{card.date}</span>
 
-        <div className="flex gap-4 mt-[2px] self-end">
+        <div className="mt-[2px] flex gap-4 self-end">
           {activeTab === 'activity' ? (
             <>
-              <Button className="px-5 py-[9px] bg-white text-black border border-[#BEBEBF] hover:bg-[#BEBEBF]">
+              <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-black hover:bg-[#BEBEBF]">
                 수정
               </Button>
               <SessionDeleteDialog>
@@ -51,11 +52,9 @@ export default function SessionModal({ card, onClose }: SessionModalProps) {
             </>
           ) : (
             <>
-              <Button className="px-5 py-[9px] bg-white text-primary border border-primary hover:bg-[#BEBEBF]">
-                작성
-              </Button>
+              <RetrospectionDialog />
               <SessionDeleteDialog>
-                <Button className="hover:text-white px-5 py-[9px] bg-white text-[#BEBEBF] border border-[#BEBEBF] hover:bg-[#BEBEBF]">
+                <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-[#BEBEBF] hover:bg-[#BEBEBF] hover:text-white">
                   삭제
                 </Button>
               </SessionDeleteDialog>
@@ -63,7 +62,7 @@ export default function SessionModal({ card, onClose }: SessionModalProps) {
           )}
         </div>
 
-        <nav className="flex mt-[20px] border-b-[3px] border-[#BEBEBF] justify-around">
+        <nav className="mt-[20px] flex justify-around border-b-[3px] border-[#BEBEBF]">
           <div
             className={cn(
               'py-[18px] w-1/4  text-center cursor-pointer',
@@ -87,14 +86,14 @@ export default function SessionModal({ card, onClose }: SessionModalProps) {
         </nav>
 
         {activeTab === 'activity' ? (
-          <div className="flex flex-col mt-[38px]">
+          <div className="mt-[38px] flex flex-col">
             <div className="flex gap-3">
               {card.images.map((image) => (
                 <img
                   key={image}
                   src={image}
                   alt="session"
-                  className="w-1/3 h-[227px] object-contain bg-[#BEBEBF]"
+                  className="h-[227px] w-1/3 bg-[#BEBEBF] object-contain"
                 />
               ))}
             </div>
