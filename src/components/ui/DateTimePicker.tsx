@@ -20,7 +20,7 @@ import DownTriangleIcon from '/icons/down-triangle.svg';
 
 interface DateTimePickerProps {
   className?: string;
-  title: string;
+  title?: string;
 }
 
 export default function DateTimePicker({
@@ -36,13 +36,17 @@ export default function DateTimePicker({
 
   return (
     <div className={cn('flex items-center', className)}>
-      <span className="text-[15px] font-medium text-[#535355]">{title}</span>
+      {title && (
+        <span className="text-[15px] mr-[10px] font-medium text-[#535355]">
+          {title}
+        </span>
+      )}
       <Popover onOpenChange={() => setIsDateOpen((prev) => !prev)}>
         <PopoverTrigger asChild>
           <Button
             variant={'outline'}
             className={cn(
-              'px-3 py-[10px] w-[180px] h-[44px] rounded-[10px] justify-start font-normal ml-[10px] bg-white text-[16px] text-[#171719] font-medium',
+              'px-3 py-[10px] w-[180px] h-[44px] rounded-[10px] justify-start font-normal bg-white text-[16px] text-[#171719] font-medium',
             )}
           >
             <div className="flex w-full items-center justify-between">

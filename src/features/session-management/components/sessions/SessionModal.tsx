@@ -25,7 +25,7 @@ export default function SessionModal({ card, onClose }: SessionModalProps) {
       className="absolute left-0 top-0 z-10 h-full w-full"
       onClick={handleBackgroundClick}
     >
-      <div className="absolute right-0 top-0 z-50 flex h-screen w-[70vw] flex-col rounded-3xl bg-white px-8 py-12 shadow-[-1px_0_10px_1px_rgba(0,0,0,0.3)]">
+      <div className="absolute right-0 top-0 z-50 flex h-screen w-[70vw] flex-col rounded-l-3xl bg-white px-8 py-12 shadow-[-1px_0_10px_1px_rgba(0,0,0,0.3)]">
         <img
           src={CloseGrayIcon}
           alt="close"

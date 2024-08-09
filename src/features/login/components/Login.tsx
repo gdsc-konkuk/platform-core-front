@@ -10,8 +10,8 @@ import { useRef, useState } from 'react';
 export default function Login() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const [isIdCloseHovered, setIdCloseHovered] = useState(false);
-  const [isPasswordCloseHovered, setPasswordCloseHovered] = useState(false);
+  const [idCloseHovered, setIdCloseHovered] = useState(false);
+  const [passwordCloseHovered, setPasswordCloseHovered] = useState(false);
   const borderRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -51,7 +51,7 @@ export default function Login() {
               }}
             />
             <img
-              src={isIdCloseHovered ? BlackCloseIcon : GrayCloseIcon}
+              src={idCloseHovered ? BlackCloseIcon : GrayCloseIcon}
               alt="close"
               className="absolute right-4 top-[14px] cursor-pointer"
               onMouseEnter={() => setIdCloseHovered(true)}
@@ -86,7 +86,7 @@ export default function Login() {
               }}
             />
             <img
-              src={isPasswordCloseHovered ? BlackCloseIcon : GrayCloseIcon}
+              src={passwordCloseHovered ? BlackCloseIcon : GrayCloseIcon}
               alt="close"
               className="absolute right-4 top-[14px] cursor-pointer"
               onMouseEnter={() => setPasswordCloseHovered(true)}

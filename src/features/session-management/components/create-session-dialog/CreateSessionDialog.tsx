@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
-import DateTimePicker from './DateTimePicker';
+import DateTimePicker from '@/components/ui/DateTimePicker';
 import ImageUpload from './ImageUpload';
 import { Textarea } from '@/components/ui/textarea';
 

@@ -1,4 +1,6 @@
 import Login from '@/features/login/components/Login';
+import CreateMail from '@/features/mail-management/components/create-mail/CreateMail';
+import MailManagement from '@/features/mail-management/components/MailManagement';
 import MainLayout from '@/features/main-layout/components/MainLayout';
 import SessionManagement from '@/features/session-management/components/SessionManagement';
 import { Navigate, Outlet } from 'react-router-dom';
@@ -22,7 +24,17 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: 'mail',
-        element: <h1>Mail</h1>,
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: <MailManagement />,
+          },
+          {
+            path: 'create',
+            element: <CreateMail />,
+          },
+        ],
       },
       {
         path: 'session',

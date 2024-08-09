@@ -33,8 +33,10 @@ export default function SessionDeleteDialog({
               </div>
             </AlertDialogCancel>
             <AlertDialogAction asChild>
-              <div className="h-[70px] flex-1 cursor-pointer rounded-none rounded-br-[20px] border-r border-t border-t-[#EBEBEF] bg-white text-center text-[20px] text-[#0DAA5C] hover:text-white">
-                삭제하기
+              <div className="h-[70px] flex-1 cursor-pointer rounded-none rounded-br-[20px] border-r border-t border-t-[#EBEBEF] bg-white text-center text-[20px] hover:text-white">
+                <div className="w-full h-full text-primary hover:text-white flex justify-center items-center">
+                  삭제하기
+                </div>
               </div>
             </AlertDialogAction>
           </div>
