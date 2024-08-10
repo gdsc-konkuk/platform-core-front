@@ -1,20 +1,25 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dayjs } from 'dayjs';
 
 import GrayCloseIcon from '/icons/close-gray.svg';
 
-interface ChildComponentProps {
-  setSelectedDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+interface CreateQRModalProps {
+  closeFirstModalAndOpenSecond: () => void;
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+  numberOfPeople: number;
+  setNumberOfPeople: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const CreateQRModal: React.FC<ChildComponentProps> = ({
-  setSelectedDate,
+export const CreateQRModal: React.FC<CreateQRModalProps> = ({
+  closeFirstModalAndOpenSecond,
+  title,
+  setTitle,
+  numberOfPeople,
+  setNumberOfPeople,
 }) => {
   const borderRef = useRef<HTMLDivElement>(null);
-  const [title, setTitle] = useState('');
-  const [numberOfPeople, setNumberOfPeople] = useState(0);
   return (
     <div>
       <div className="fixed inset-0 bg-gray-800 bg-opacity-10 flex justify-center items-center">
@@ -91,7 +96,7 @@ export const CreateQRModal: React.FC<ChildComponentProps> = ({
               />
             </div>
             <Button
-              onClick={() => setSelectedDate(null)}
+              onClick={closeFirstModalAndOpenSecond}
               className="absolute bottom-[0px] right-[0px] px-[28px] py-[14px]"
             >
               확인

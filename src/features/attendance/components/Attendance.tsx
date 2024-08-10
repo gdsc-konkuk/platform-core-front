@@ -8,9 +8,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { CreateQRModal } from './CreateQRModal';
+import { ModalManager } from './ModalManager';
 
 dayjs.extend(localeData);
+
+interface EventData {
+  eventId: number;
+  attendanceId: number;
+  title: string | null;
+  startAt: number;
+}
+
+const data: EventData[] = [
+  {
+    eventId: 0,
+    attendanceId: 0,
+    title: null,
+    startAt: 2,
+  },
+  {
+    eventId: 1,
+    attendanceId: 1,
+    title: null,
+    startAt: 5,
+  },
+  {
+    eventId: 2,
+    attendanceId: 2,
+    title: null,
+    startAt: 12,
+  },
+];
 
 export default function Attendance() {
   const [currentDate, setCurrentDate] = useState(dayjs());
@@ -97,14 +125,24 @@ export default function Attendance() {
                 <span className="text-[#535355] font-[Pretendard] text-[20px] font-[600]">
                   {i + 1}
                 </span>
+                {data.map((monthEvent: EventData) => {
+                  return monthEvent.startAt === i ? (
+                    <div className="w-[10px] h-[10px] bg-[#9747FF] rounded-[11px]"></div>
+                  ) : null;
+                })}
                 {/* <div className="w-[11px] h-[11px] bg-[#9747FF] rounded-[11px]"></div>
-                <div className="w-[11px] h-[11px] bg-[#EA4335] rounded-[11px]"></div> */}
+                <div className="w-[10px] h-[10px] bg-[#EA4335] rounded-[11px]"></div> */}
               </div>
             ))}
           </div>
         </div>
 
-        {selectedDate && <CreateQRModal setSelectedDate={setSelectedDate} />}
+        {selectedDate && (
+          <ModalManager
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+          />
+        )}
       </div>
     </div>
   );
