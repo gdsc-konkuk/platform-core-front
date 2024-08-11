@@ -9,7 +9,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { ModalManager } from './ModalManager';
-
 dayjs.extend(localeData);
 
 interface EventData {
@@ -65,7 +64,7 @@ export default function Attendance() {
   const firstDayOfMonth = currentDate.startOf('month').day();
 
   return (
-    <div className="px-4 flex flex-col items-center bg-[#ffffff]">
+    <div className="flex flex-col items-center bg-[#ffffff]">
       <div>
         <h1 className="mb-[3vh] font-['NanumSquareRoundEB'] text-[24px] font-extrabold">
           출석
@@ -118,7 +117,7 @@ export default function Attendance() {
 
             {Array.from({ length: daysInMonth }, (_, i) => (
               <div
-                key={i}
+                key={'day' + i}
                 className="w-[120px] h-[95px] px-[16px] py-[10px] rounded-[10px] cursor-pointer bg-[#F9F9F9] hover:bg-gray-200 transition duration-300"
                 onClick={() => handleDateClick(currentDate.date(i + 1))}
               >
@@ -127,7 +126,10 @@ export default function Attendance() {
                 </span>
                 {data.map((monthEvent: EventData) => {
                   return monthEvent.startAt === i ? (
-                    <div className="w-[10px] h-[10px] bg-[#9747FF] rounded-[11px]"></div>
+                    <div
+                      key={'event' + i}
+                      className="w-[10px] h-[10px] bg-[#9747FF] rounded-[11px]"
+                    ></div>
                   ) : null;
                 })}
                 {/* <div className="w-[11px] h-[11px] bg-[#9747FF] rounded-[11px]"></div>

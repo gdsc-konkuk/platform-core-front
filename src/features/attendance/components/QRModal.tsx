@@ -17,7 +17,6 @@ export const QRModal: React.FC<QRModalProps> = ({
   numberOfPeople,
 }) => {
   const [currentAttendance, setCurrentAttendance] = useState(0);
-  console.log(selectedDate);
   return (
     <div>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">

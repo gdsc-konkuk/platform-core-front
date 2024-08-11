@@ -211,7 +211,7 @@ export default function AttendanceStatus() {
           <h1 className="mb-[2vh] font-['NanumSquareRoundEB'] text-[24px] font-extrabold">
             출석 현황
           </h1>
-          <div className="p-4 border w-[1008px] h-[85vh] rounded-[20px]">
+          <div className="p-4 border w-[70vw] h-[85vh] rounded-[20px]">
             <div className="flex justify-between items-center mb-4">
               <div className="flex justify-start items-center mb-4">
                 <Select onValueChange={handleYearChange}>
@@ -269,7 +269,7 @@ export default function AttendanceStatus() {
             </div>
             <div className="overflow-y-auto h-[70vh]">
               <table className="w-full table-auto">
-                <thead>
+                <thead className="sticky top-0 z-10 bg-white">
                   <tr className="text-left">
                     <th className="px-4 py-2">이름</th>
                     <th className="px-4 py-2">학과</th>
