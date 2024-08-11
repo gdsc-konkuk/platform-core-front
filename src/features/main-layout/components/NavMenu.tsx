@@ -47,6 +47,7 @@ export default function NavMenu() {
       <ul className="mt-[75px] flex flex-col gap-[46px]">
         {NavData.map((data) => (
           <NavLink
+            key={data.link}
             to={data.link}
             className={({ isActive }) =>
               cn(

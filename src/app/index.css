@@ -23,6 +23,17 @@
   src: url('/fonts/SUITEVariable.woff2') format('woff2');
 }
 
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('/fonts/NanumSquareRound.otf') format('opentype');
+}
+
+@layer utilities {
+  .grid-auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(328px, 1fr));
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
