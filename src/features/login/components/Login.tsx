@@ -6,13 +6,51 @@ import PasswordIcon from '/icons/password.svg';
 import BlackCloseIcon from '/icons/close-black.svg';
 import GrayCloseIcon from '/icons/close-gray.svg';
 import { useRef, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { loginRequest } from '../apis/loginRequest';
+import { loginFormSchema, LoginFormFields } from '../lib/loginFormSchema';
+import Cookies from 'js-cookie';
 
 export default function Login() {
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
   const [idCloseHovered, setIdCloseHovered] = useState(false);
   const [passwordCloseHovered, setPasswordCloseHovered] = useState(false);
   const borderRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormFields>({
+    resolver: zodResolver(loginFormSchema),
+  });
+
+  const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
+    try {
+      const {
+        data: { sessionId },
+      } = await loginRequest(data.id, data.password);
+      Cookies.set('JSESSIONID', sessionId);
+      navigate('/app/attendance');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          setError('root', {
+            message: '아이디 또는 비밀번호가 일치하지 않습니다.',
+          });
+        } else {
+          setError('root', {
+            message: '서버에 문제가 발생했습니다. 다시 시도해주세요.',
+          });
+        }
+      }
+    }
+  };
 
   return (
     <div className="flex h-full w-full font-pretendard">
@@ -29,14 +67,16 @@ export default function Login() {
       </div>
       <div className="flex w-2/5 flex-col items-center justify-between bg-background py-[53px]">
         <div className="w-1"></div>
-        <form className="w-[400px] flex flex-col">
+        <form
+          className="w-[400px] flex flex-col"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="relative w-full">
             <img src={IdIcon} alt="id" className="absolute left-4 top-[14px]" />
             <Input
+              {...register('id')}
               placeholder="아이디"
               className="h-[50px] rounded-b-none border-b-0 bg-white px-[54px] text-[16px] focus:border-[1.5px] focus:border-b-0 focus:border-[#0DAA5C]"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
               onFocus={() => {
                 borderRef.current?.style.setProperty(
                   'background-color',
@@ -56,7 +96,7 @@ export default function Login() {
               className="absolute right-4 top-[14px] cursor-pointer"
               onMouseEnter={() => setIdCloseHovered(true)}
               onMouseLeave={() => setIdCloseHovered(false)}
-              onClick={() => setId('')}
+              onClick={() => setValue('id', '')}
             />
           </div>
           <div className="w-full h-[1.5px] bg-[#E5E5E5]" ref={borderRef}></div>
@@ -67,11 +107,10 @@ export default function Login() {
               className="absolute left-4 top-[14px]"
             />
             <Input
+              {...register('password')}
               placeholder="비밀번호"
               type="password"
               className="h-[50px] rounded-t-none border-t-0 bg-white px-[54px] text-[16px] focus:border-[1.5px] focus:border-t-0 focus:border-[#0DAA5C]"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               onFocus={() => {
                 borderRef.current?.style.setProperty(
                   'background-color',
@@ -91,15 +130,29 @@ export default function Login() {
               className="absolute right-4 top-[14px] cursor-pointer"
               onMouseEnter={() => setPasswordCloseHovered(true)}
               onMouseLeave={() => setPasswordCloseHovered(false)}
-              onClick={() => setPassword('')}
+              onClick={() => setValue('password', '')}
             />
           </div>
           <Button
             type="submit"
             className="mt-4 h-[50px] w-full text-[17px] font-semibold"
+            disabled={isSubmitting}
           >
-            로그인
+            {isSubmitting ? '로그인 중...' : '로그인'}
           </Button>
+          {errors.id && (
+            <p className="text-red-500 text-[14px] mt-2">{errors.id.message}</p>
+          )}
+          {errors.password && (
+            <p className="text-red-500 text-[14px] mt-2">
+              {errors.password.message}
+            </p>
+          )}
+          {errors.root && (
+            <p className="text-red-500 text-[14px] mt-2">
+              {errors.root.message}
+            </p>
+          )}
         </form>
         <h1 className="font-suite text-[40px] font-[900] leading-[50px] text-[#013318]">
           KUINSIDE
