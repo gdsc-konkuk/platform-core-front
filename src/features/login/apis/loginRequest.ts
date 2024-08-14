@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function loginRequest(id: string, password: string) {
   return axios.post(
-    'http://3.86.202.162/login',
+    'http://localhost:8080/login',
     {
       id,
       password,
@@ -11,6 +11,7 @@ export async function loginRequest(id: string, password: string) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
+      withCredentials: true,
     },
   );
 }

@@ -12,13 +12,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { loginRequest } from '../apis/loginRequest';
 import { loginFormSchema, LoginFormFields } from '../lib/loginFormSchema';
-import Cookies from 'js-cookie';
+import { useAuth } from '@/stores/AuthProvider';
 
 export default function Login() {
   const [idCloseHovered, setIdCloseHovered] = useState(false);
   const [passwordCloseHovered, setPasswordCloseHovered] = useState(false);
   const borderRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth();
 
   const {
     register,
@@ -32,10 +33,8 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
     try {
-      const {
-        data: { sessionId },
-      } = await loginRequest(data.id, data.password);
-      Cookies.set('JSESSIONID', sessionId);
+      await loginRequest(data.id, data.password);
+      setIsLoggedIn(true);
       navigate('/app/attendance');
     } catch (error) {
       if (axios.isAxiosError(error)) {
