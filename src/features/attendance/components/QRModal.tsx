@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import dayjs from 'dayjs';
+import { instance } from '@/lib/instance';
 
 interface QRModalProps {
   selectedDate: dayjs.Dayjs;
@@ -19,6 +20,22 @@ export const QRModal: React.FC<QRModalProps> = ({
   attendanceId,
 }) => {
   const [currentAttendance, setCurrentAttendance] = useState(0);
+  const [url, setUrl] = useState('');
+
+  const postAttendanceQR = async (attendanceId: number) => {
+    return await instance
+      .post(`/attendances/${attendanceId}/qr?attendanceId=${attendanceId}`)
+      .then((res) => {
+        console.log('QR코드:', res.data);
+        setUrl(res.data.data);
+        return res.data;
+      });
+  };
+
+  useEffect(() => {
+    postAttendanceQR(attendanceId as number);
+  }, [postAttendanceQR]);
+
   return (
     <div>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
