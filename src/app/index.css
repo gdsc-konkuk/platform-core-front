@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 @font-face {
+  font-family: 'NanumSquareRoundL';
+  font-weight: 500; 
+  src: url('/fonts/NanumSquareRoundL.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'NanumSquareRoundEB';
+  font-weight: 700; 
+  src: url('/fonts/NanumSquareRoundEB.woff2') format('woff2');
+}
+
+@font-face {
   font-family: 'Pretendard';
   src: url('/fonts/PretendardVariable.woff2') format('woff2');
 }
@@ -144,5 +155,18 @@ table {
 @layer base {
   * {
     @apply border-border;
+  }
+}
+@layer base {
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    @apply appearance-none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
   }
 }
