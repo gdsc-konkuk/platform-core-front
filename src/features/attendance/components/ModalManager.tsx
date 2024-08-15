@@ -7,11 +7,13 @@ import { QRModal } from './QRModal';
 interface ModalManagerProps {
   selectedDate: dayjs.Dayjs;
   setSelectedDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  attendanceId: number | null | undefined;
 }
 
 export const ModalManager: React.FC<ModalManagerProps> = ({
   selectedDate,
   setSelectedDate,
+  attendanceId,
 }) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(true);
   const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
@@ -46,6 +48,7 @@ export const ModalManager: React.FC<ModalManagerProps> = ({
           title={title}
           numberOfPeople={numberOfPeople}
           closeSecondModal={closeSecondModal}
+          attendanceId={attendanceId}
         />
       )}
     </div>

@@ -8,6 +8,7 @@ interface QRModalProps {
   closeSecondModal: () => void;
   title: string;
   numberOfPeople: number;
+  attendanceId: number | null | undefined;
 }
 
 export const QRModal: React.FC<QRModalProps> = ({
@@ -15,6 +16,7 @@ export const QRModal: React.FC<QRModalProps> = ({
   closeSecondModal,
   title,
   numberOfPeople,
+  attendanceId,
 }) => {
   const [currentAttendance, setCurrentAttendance] = useState(0);
   return (

@@ -9,45 +9,52 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { ModalManager } from './ModalManager';
+import { useQuery } from '@tanstack/react-query';
+import { getAttendances } from '../apis/attendanceRequest';
+
 dayjs.extend(localeData);
 
 interface EventData {
   eventId: number;
-  attendanceId: number;
+  attendanceId: number | null | undefined;
   title: string | null;
-  startAt: number;
+  startAt: string;
 }
 
-const data: EventData[] = [
-  {
-    eventId: 0,
-    attendanceId: 0,
-    title: null,
-    startAt: 2,
-  },
-  {
-    eventId: 1,
-    attendanceId: 1,
-    title: null,
-    startAt: 5,
-  },
-  {
-    eventId: 2,
-    attendanceId: 2,
-    title: null,
-    startAt: 12,
-  },
-];
+type ResponseData = {
+  message: string;
+  data: EventData[];
+  success: boolean;
+};
 
 export default function Attendance() {
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [selectedYear, setSelectedYear] = useState(currentDate.year());
   const [selectedMonth, setSelectedMonth] = useState(currentDate.month());
 
+  const { data, error, isLoading } = useQuery<ResponseData>({
+    queryKey: ['events', selectedYear, selectedMonth],
+    queryFn: () =>
+      getAttendances(selectedYear.toString(), (selectedMonth + 1).toString()),
+  });
+
+  console.log(data);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {(error as Error).message}</div>;
+
   const handleDateClick = (date: dayjs.Dayjs) => {
-    setSelectedDate(date);
+    data?.data.forEach((event: EventData) => {
+      const eventDate = dayjs(event.startAt).format('YYYY-MM-DD');
+      if (eventDate === date.format('YYYY-MM-DD')) {
+        setSelectedDate(date);
+        setSelectedEvent(event);
+      }
+    });
   };
+
+  console.log('selectedDate: ', selectedDate, selectedEvent);
 
   const handleYearChange = (value: string) => {
     const newYear = Number(value);
@@ -124,8 +131,10 @@ export default function Attendance() {
                 <span className="text-[#535355] font-[Pretendard] text-[20px] font-[600]">
                   {i + 1}
                 </span>
-                {data.map((monthEvent: EventData) => {
-                  return monthEvent.startAt === i ? (
+                {data?.data.map((monthEvent: EventData) => {
+                  const date = new Date(monthEvent.startAt);
+                  const day = date.getDate();
+                  return day === i + 1 ? (
                     <div
                       key={'event' + i}
                       className="w-[10px] h-[10px] bg-[#9747FF] rounded-[11px]"
@@ -143,18 +152,10 @@ export default function Attendance() {
           <ModalManager
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
+            attendanceId={selectedEvent?.attendanceId}
           />
         )}
       </div>
     </div>
   );
-}
-
-{
-  /* 
-          <CreateQRModal
-          selectedDate={selectedDate}
-          title={setTitle}
-          setTitle={setTitle}
-        /> */
 }
