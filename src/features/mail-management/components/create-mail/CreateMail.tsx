@@ -86,7 +86,7 @@ export default function CreateMail() {
   const [emailCloseHovered, setEmailCloseHovered] = useState(false);
 
   return (
-    <div className="flex h-full w-full flex-col overflow-y-scroll scrollbar-hide">
+    <form className="flex h-full w-full flex-col overflow-y-scroll scrollbar-hide">
       <h1 className="font-nanum text-[24px]">메일 전송 관리</h1>
 
       <Button className="h-[50px] w-[86px] self-end px-[28px] py-3 text-white">
@@ -264,6 +264,6 @@ export default function CreateMail() {
           placeholder="내용을 입력해주세요."
         />
       </div>
-    </div>
+    </form>
   );
 }

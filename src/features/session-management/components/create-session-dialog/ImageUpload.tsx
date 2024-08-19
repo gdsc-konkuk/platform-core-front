@@ -1,18 +1,25 @@
-import { useState, ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import PlusIcon from '/icons/plus.svg';
 import DeleteIcon from '/icons/delete.svg';
+import { useFormContext } from 'react-hook-form';
 
 export default function ImageUpload() {
-  const [images, setImages] = useState<string[]>([]);
+  const { watch, setValue } = useFormContext();
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
     const newImages = files.map((file) => URL.createObjectURL(file));
-    setImages((prevImages) => [...prevImages, ...newImages]);
+    setValue('array', [...watch('array'), ...files]);
+    setPreviewImages([...previewImages, ...newImages]);
   };
 
   const handleRemoveImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
+    setValue(
+      'array',
+      watch('array').filter((_, i) => i !== index),
+    );
+    setPreviewImages(previewImages.filter((_, i) => i !== index));
   };
 
   return (
@@ -29,7 +36,7 @@ export default function ImageUpload() {
           />
         </label>
         <div className="flex gap-3">
-          {images.map((image, index) => (
+          {previewImages.map((image, index) => (
             <div key={index} className="relative">
               <img
                 src={image}
