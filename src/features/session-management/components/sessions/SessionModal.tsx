@@ -62,7 +62,7 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
             </>
           ) : (
             <>
-              <RetrospectionDialog />
+              <RetrospectionDialog id={id} />
               <SessionDeleteDialog>
                 <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-[#BEBEBF] hover:bg-[#BEBEBF] hover:text-white">
                   삭제
@@ -97,7 +97,7 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
 
         {activeTab === 'activity' ? (
           <div className="mt-[38px] flex flex-col">
-            <div className="flex gap-3">
+            <div className="flex gap-3 w-full overflow-x-auto">
               {sessionData.images.map((image: string) => (
                 <img
                   key={image}

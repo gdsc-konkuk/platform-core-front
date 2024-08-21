@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { AlertDialogTitle } from '@radix-ui/react-alert-dialog';
 
 interface SessionDeleteDialogProps {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ export default function SessionDeleteDialog({
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent className="gap-0 rounded-[20px] border-none bg-white p-0 sm:rounded-[20px]">
         <AlertDialogHeader className="h-full w-full">
+          <AlertDialogTitle />
           <AlertDialogDescription className="px-20 py-[41px] text-center text-[20px] text-[#303030]">
             정말로 삭제하시겠습니까?
           </AlertDialogDescription>

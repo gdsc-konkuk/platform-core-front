@@ -31,11 +31,13 @@ import { format } from 'date-fns';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createSession } from '../../apis/createSession';
 import { useToast } from '@/components/ui/use-toast';
+import { useState } from 'react';
 
 export default function CreateSessionDialog() {
   const today = new Date();
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
 
   const methods = useForm<CreateSessionFormFields>({
     resolver: zodResolver(CreateSessionFormSchema),
@@ -60,6 +62,8 @@ export default function CreateSessionDialog() {
         title: '이벤트 생성 성공',
         description: '이벤트가 성공적으로 생성되었습니다.',
       });
+      setIsOpen(false);
+      methods.reset();
     },
   });
 
@@ -77,9 +81,12 @@ export default function CreateSessionDialog() {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="font-pretendard mt-3 h-[50px] w-[135px] self-end rounded-[10px] border border-primary bg-white px-7 py-3 text-[17px] font-semibold text-primary hover:text-white">
+        <Button
+          className="font-pretendard mt-3 h-[50px] w-[135px] self-end rounded-[10px] border border-primary bg-white px-7 py-3 text-[17px] font-semibold text-primary hover:text-white"
+          onClick={() => setIsOpen(true)}
+        >
           이벤트 생성
         </Button>
       </DialogTrigger>
