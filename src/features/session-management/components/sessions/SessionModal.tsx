@@ -7,6 +7,7 @@ import RetrospectionDialog from './RetrospectionDialog';
 import { useQuery } from '@tanstack/react-query';
 import { getSession } from '../../apis/getSession';
 import RetrospectionDeleteDialog from './RetrospectionDeleteDialog';
+import EditSessionDialog from './EditSessionDialog';
 
 interface SessionModalProps {
   id: number;
@@ -52,9 +53,7 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
         <div className="mt-[2px] flex gap-4 self-end">
           {activeTab === 'activity' ? (
             <>
-              <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-black hover:bg-[#BEBEBF]">
-                수정
-              </Button>
+              <EditSessionDialog data={sessionData} />
               <SessionDeleteDialog id={id} onClose={onClose}>
                 <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-black hover:bg-[#BEBEBF]">
                   삭제
