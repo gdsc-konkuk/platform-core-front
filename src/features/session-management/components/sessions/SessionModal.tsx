@@ -54,7 +54,7 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
               <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-black hover:bg-[#BEBEBF]">
                 수정
               </Button>
-              <SessionDeleteDialog>
+              <SessionDeleteDialog id={id} onClose={onClose}>
                 <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-black hover:bg-[#BEBEBF]">
                   삭제
                 </Button>
