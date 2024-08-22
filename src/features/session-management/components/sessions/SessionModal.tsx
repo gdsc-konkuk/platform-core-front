@@ -6,6 +6,7 @@ import SessionDeleteDialog from './SessionDeleteDialog';
 import RetrospectionDialog from './RetrospectionDialog';
 import { useQuery } from '@tanstack/react-query';
 import { getSession } from '../../apis/getSession';
+import RetrospectionDeleteDialog from './RetrospectionDeleteDialog';
 
 interface SessionModalProps {
   id: number;
@@ -63,11 +64,11 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
           ) : (
             <>
               <RetrospectionDialog id={id} />
-              <SessionDeleteDialog>
+              <RetrospectionDeleteDialog id={id}>
                 <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-[#BEBEBF] hover:bg-[#BEBEBF] hover:text-white">
                   삭제
                 </Button>
-              </SessionDeleteDialog>
+              </RetrospectionDeleteDialog>
             </>
           )}
         </div>

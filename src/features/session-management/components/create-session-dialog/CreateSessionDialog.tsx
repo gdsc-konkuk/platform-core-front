@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -143,7 +141,7 @@ export default function CreateSessionDialog() {
                         render={({ field }) => (
                           <Calendar
                             mode="single"
-                            selected={field.value}
+                            selected={new Date(field.value)}
                             onDayClick={(day) => {
                               methods.setValue(
                                 'startDate',
@@ -173,7 +171,7 @@ export default function CreateSessionDialog() {
                         render={({ field }) => (
                           <Calendar
                             mode="single"
-                            selected={field.value}
+                            selected={new Date(field.value)}
                             onDayClick={(day) => {
                               methods.setValue(
                                 'endDate',
