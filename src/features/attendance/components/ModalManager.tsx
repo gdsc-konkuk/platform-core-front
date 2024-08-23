@@ -34,7 +34,6 @@ export const ModalManager: React.FC<ModalManagerProps> = ({
   const closeSecondModal = () => {
     setIsSecondModalOpen(false);
     setSelectedDate(null);
-    refetch();
   };
 
   return (
@@ -59,6 +58,7 @@ export const ModalManager: React.FC<ModalManagerProps> = ({
           selectedEvent={selectedEvent}
           attendanceId={attendanceId}
           attendUrl={attendUrl}
+          refetch={refetch}
         />
       )}
     </div>

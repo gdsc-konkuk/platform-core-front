@@ -19,6 +19,7 @@ interface QRModalProps {
   selectedEvent: EventData;
   attendanceId: number;
   attendUrl: string;
+  refetch: () => void;
 }
 interface IAttendancesStatus {
   attendanceId: number;
@@ -32,6 +33,7 @@ export const QRModal: React.FC<QRModalProps> = ({
   selectedEvent,
   attendanceId,
   attendUrl,
+  refetch,
 }) => {
   const [error, setError] = useState<Error | null>(null);
 
@@ -40,6 +42,7 @@ export const QRModal: React.FC<QRModalProps> = ({
     mutationFn: (attendanceId: number) => deleteAttendance(attendanceId),
     onSuccess: () => {
       //console.log('Attendance deleted successfully:', data);
+      refetch();
     },
     onError: (error: Error) => {
       setError(error);
@@ -52,6 +55,7 @@ export const QRModal: React.FC<QRModalProps> = ({
     mutationFn: (attendanceId: number) => deleteAttendanceQR(attendanceId),
     onSuccess: () => {
       //console.log('QR deleted successfully:', data);
+      refetch();
     },
     onError: (error: Error) => {
       setError(error);

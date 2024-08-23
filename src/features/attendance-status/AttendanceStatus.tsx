@@ -31,7 +31,7 @@ export default function AttendanceStatus() {
           <h1 className="mb-[2vh] font-['NanumSquareRoundEB'] text-[24px] font-extrabold ">
             출석 현황
           </h1>
-          <div className="p-4 border w-[70vw] h-[85vh] rounded-[20px]">
+          <div className="p-4 border w-[70vw] h-[80vh] rounded-[20px]">
             <div className="flex justify-between">
               <SelectYearMonth
                 selectedYear={selectedYear}

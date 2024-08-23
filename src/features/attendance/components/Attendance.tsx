@@ -81,7 +81,7 @@ export default function Attendance() {
           <h1 className="mb-[3vh] font-['NanumSquareRoundEB'] text-[24px] font-extrabold">
             출석
           </h1>
-          <div className="w-[1008px] pt-11 pl-14 pb-11 pr-11 border border-solid border-[#DADADA] rounded-3xl ">
+          <div className="w-[900px] h-[78vh] pt-4 pl-11 pb-11 pr-11 border border-solid border-[#DADADA] rounded-3xl ">
             <div className="flex justify-start items-center mb-4">
               <Select onValueChange={handleYearChange}>
                 <SelectTrigger className="w-[110px] mr-2 text-[#171719] font-[Pretendard] text-[22px] font-[600]">
@@ -117,7 +117,7 @@ export default function Attendance() {
               {['월', '화', '수', '목', '금', '토', '일'].map((day) => (
                 <div
                   key={day}
-                  className="mb-[18px] text-start text-[#868687] text-[16px] font-[Pretendard] font-[600]"
+                  className="mb-[10px] text-start text-[#868687] text-[14px] font-[Pretendard] font-[600]"
                 >
                   {day}
                 </div>
@@ -130,29 +130,31 @@ export default function Attendance() {
               {Array.from({ length: daysInMonth }, (_, i) => (
                 <div
                   key={'day' + i}
-                  className="w-[120px] h-[95px] px-[16px] py-[10px] rounded-[10px] cursor-pointer bg-[#F9F9F9] hover:bg-gray-200 transition duration-300"
+                  className="w-[105px] h-[78px] px-[16px] py-[10px] rounded-[10px] cursor-pointer bg-[#F9F9F9] hover:bg-gray-200 transition duration-300"
                   onClick={() => handleDateClick(currentDate.date(i + 1))}
                 >
-                  <span className="text-[#535355] font-[Pretendard] text-[20px] font-[600]">
+                  <span className="text-[#535355] font-[Pretendard] text-[16px] font-[600]">
                     {i + 1}
                   </span>
-                  {data?.data.map((monthEvent: EventData) => {
-                    const date = new Date(monthEvent.startAt);
-                    const day = date.getDate();
-                    return day === i + 1 ? (
-                      monthEvent.attendanceId ? (
-                        <div
-                          key={'event' + i}
-                          className="w-[10px] h-[10px] bg-[#9747FF] rounded-[11px]"
-                        ></div>
-                      ) : (
-                        <div
-                          key={'doneEvent' + i}
-                          className="w-[10px] h-[10px] bg-[#EA4335] rounded-[11px]"
-                        ></div>
-                      )
-                    ) : null;
-                  })}
+                  <div className="flex">
+                    {data?.data.map((monthEvent: EventData) => {
+                      const date = new Date(monthEvent.startAt);
+                      const day = date.getDate();
+                      return day === i + 1 ? (
+                        monthEvent.attendanceId ? (
+                          <div
+                            key={'event' + i}
+                            className="w-[8px] h-[8px] bg-[#9747FF] rounded-[11px] mr-[3px]"
+                          ></div>
+                        ) : (
+                          <div
+                            key={'doneEvent' + i}
+                            className="w-[8px] h-[8px] bg-[#EA4335] rounded-[11px] mr-[3px]"
+                          ></div>
+                        )
+                      ) : null;
+                    })}
+                  </div>
                 </div>
               ))}
             </div>
