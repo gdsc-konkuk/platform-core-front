@@ -10,5 +10,5 @@ export interface Mail {
 }
 
 export interface MailData extends Mail {
-  isChecked: boolean;
+  isChecked?: boolean;
 }

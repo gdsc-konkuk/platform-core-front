@@ -45,9 +45,11 @@ export const CreateSessionFormSchema = z
   .refine(
     (data) => {
       const start = new Date(
-        `${data.startDate}T${data.startHour}:${data.startMinute}`,
+        `${data.startDate}T${data.startHour.padStart(2, '0')}:${data.startMinute.padStart(2, '0')}`,
       );
-      const end = new Date(`${data.endDate}T${data.endHour}:${data.endMinute}`);
+      const end = new Date(
+        `${data.endDate}T${data.endHour.padStart(2, '0')}:${data.endMinute.padStart(2, '0')}`,
+      );
       return start < end;
     },
     {

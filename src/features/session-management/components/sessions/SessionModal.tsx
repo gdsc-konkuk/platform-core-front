@@ -28,7 +28,7 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
     queryFn: () => getSession(id),
   });
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) return null;
 
   return (
     <div

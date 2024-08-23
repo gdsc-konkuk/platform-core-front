@@ -89,7 +89,10 @@ export default function CreateMail() {
         );
       }),
     );
-    setUsers(users.filter((user) => user.isChecked === false));
+    setUsers((users) => users.filter((user) => user.isChecked === false));
+    setUsers((users) =>
+      users.map((user, index) => ({ ...user, id: index + 1 })),
+    );
   };
 
   const { mutateAsync } = useMutation({
@@ -260,8 +263,12 @@ export default function CreateMail() {
                 </div>
               </div>
               <div className="flex gap-[14px] self-end">
-                <Button onClick={addReciever}>추가</Button>
-                <Button onClick={removeReciever}>삭제</Button>
+                <Button onClick={addReciever} type="button">
+                  추가
+                </Button>
+                <Button onClick={removeReciever} type="button">
+                  삭제
+                </Button>
               </div>
             </div>
 

@@ -64,15 +64,21 @@ export default function MailManagement() {
 
   useEffect(() => {
     setMails(
-      data?.data.emailTasks.map((mail: Mail) => ({
-        ...mail,
-        isChecked: false,
-      })) ?? [],
+      data?.data.emailTasks.map((mail: Mail) => {
+        if (mail.isSent) return mail;
+        return { ...mail, isChecked: false };
+      }),
     );
   }, [data?.data.emailTasks]);
 
   useEffect(() => {
-    const isAllChecked = mails.every((mail) => mail.isChecked);
+    if (!mails || mails.length === 0) {
+      setIsCheckedAll(false);
+      return;
+    }
+    const isAllChecked = mails.every((mail) => {
+      return mail.isSent || mail.isChecked;
+    });
     setIsCheckedAll(isAllChecked);
     if (!isAllChecked) {
       setIsCheckedAll(false);
@@ -81,6 +87,10 @@ export default function MailManagement() {
 
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (!mails) {
+    return <div>메일이 없습니다.</div>;
   }
 
   return (
@@ -142,28 +152,32 @@ export default function MailManagement() {
             {mails.map((mail) => (
               <TableRow key={mail.id} className="h-[60px] px-[34px] py-5">
                 <TableCell>
-                  <Label htmlFor={`check-${mail.id}`}>
-                    <img
-                      src={mail.isChecked ? CheckedIcon : UncheckedIcon}
-                      alt="check"
-                      className="w-6 h-6 cursor-pointer"
-                    />
-                  </Label>
-                  <Input
-                    id={`check-${mail.id}`}
-                    type="checkbox"
-                    checked={mail.isChecked}
-                    onChange={(e) =>
-                      setMails(
-                        mails.map((m) =>
-                          m.id === mail.id
-                            ? { ...m, isChecked: e.target.checked }
-                            : m,
-                        ),
-                      )
-                    }
-                    className="hidden"
-                  />
+                  {mail.isSent ? null : (
+                    <>
+                      <Label htmlFor={`check-${mail.id}`}>
+                        <img
+                          src={mail.isChecked ? CheckedIcon : UncheckedIcon}
+                          alt="check"
+                          className="w-6 h-6 cursor-pointer"
+                        />
+                      </Label>
+                      <Input
+                        id={`check-${mail.id}`}
+                        type="checkbox"
+                        checked={mail.isChecked}
+                        onChange={(e) =>
+                          setMails(
+                            mails.map((m) =>
+                              m.id === mail.id
+                                ? { ...m, isChecked: e.target.checked }
+                                : m,
+                            ),
+                          )
+                        }
+                        className="hidden"
+                      />
+                    </>
+                  )}
                 </TableCell>
                 <TableCell>{mail.id}</TableCell>
                 <TableCell>
