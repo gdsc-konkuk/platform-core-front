@@ -1,3 +1,4 @@
+import ErrorPopup from '@/components/ui/ErrorPopup';
 import { SelectYearMonth, AttendanceTable } from './AttendanceComponents';
 import { useAttendanceStatus } from './hooks/useAttendanceStatus';
 import { useSaveAttendances } from './hooks/useSaveAttendances';
@@ -21,10 +22,10 @@ export default function AttendanceStatus() {
   } = useSaveAttendances(recordsData, selectedYear, selectedMonth);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {(error as Error).message}</div>;
 
   return (
     <>
+      {error && <ErrorPopup />}
       <div className="flex justify-center">
         <div className="flex flex-col items-start">
           <h1 className="mb-[2vh] font-['NanumSquareRoundEB'] text-[24px] font-extrabold ">

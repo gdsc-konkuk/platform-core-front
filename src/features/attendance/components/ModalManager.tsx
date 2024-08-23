@@ -37,7 +37,6 @@ export const ModalManager: React.FC<ModalManagerProps> = ({
     refetch();
   };
 
-  console.log('QR url:', attendUrl);
   return (
     <div>
       {isFirstModalOpen && (

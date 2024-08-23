@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import dayjs from 'dayjs';
@@ -11,6 +11,7 @@ import {
   deleteAttendanceQR,
   getAttendancesStatus,
 } from '../apis/attendanceRequest';
+import ErrorPopup from '@/components/ui/ErrorPopup';
 
 interface QRModalProps {
   selectedDate: dayjs.Dayjs;
@@ -32,35 +33,39 @@ export const QRModal: React.FC<QRModalProps> = ({
   attendanceId,
   attendUrl,
 }) => {
+  const [error, setError] = useState<Error | null>(null);
+
+  //출석 삭제 (attendanceID 삭제)
   const deleteAttendanceMutation = useMutation({
     mutationFn: (attendanceId: number) => deleteAttendance(attendanceId),
-    onSuccess: (data) => {
-      console.log('Attendance deleted successfully:', data);
+    onSuccess: () => {
+      //console.log('Attendance deleted successfully:', data);
     },
     onError: (error: Error) => {
+      setError(error);
       console.error('Error deleting attendance:', error);
     },
   });
 
+  //QR 만료(출석 종료)
   const deleteQRMutation = useMutation({
     mutationFn: (attendanceId: number) => deleteAttendanceQR(attendanceId),
-    onSuccess: (data) => {
-      console.log('QR deleted successfully:', data);
+    onSuccess: () => {
+      //console.log('QR deleted successfully:', data);
     },
     onError: (error: Error) => {
+      setError(error);
       console.error('Error deleting QR:', error);
     },
   });
 
+  //출석 현황 받아오기(3초)
   const { data: attendancesStatus } = useQuery<IAttendancesStatus>({
     queryKey: ['attendancesStatus', attendanceId],
     queryFn: () => getAttendancesStatus(attendanceId),
     refetchInterval: 3000, // 3초마다 refetch
   });
 
-  useEffect(() => {
-    console.log('attendancesStatus:', attendancesStatus);
-  }, [attendancesStatus]);
   const handleDeleteAttendance = (attendanceId: number) => {
     deleteAttendanceMutation.mutate(attendanceId);
     closeSecondModal();
@@ -69,8 +74,11 @@ export const QRModal: React.FC<QRModalProps> = ({
     deleteQRMutation.mutate(attendanceId);
     closeSecondModal();
   };
+
   return (
     <div>
+      {error && <ErrorPopup />}
+
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <div className="w-[794px] h-[500px] flex flex-row gap-[86px] justify-center items-center bg-[#ffffff] p-4 rounded-[25px] filter drop-shadow-[0px_4px_10px_rgba(0,0,0,0.15)]">
           <div className="bg-[#d4d4d4] rounded-[25px]">

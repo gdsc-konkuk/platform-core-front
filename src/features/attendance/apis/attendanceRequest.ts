@@ -16,7 +16,7 @@ export const getAttendances = async (year: string, month: string) => {
 export const postAttendance = async (data: AttendanceData) => {
   try {
     const response = await instance.post(`/attendances`, data);
-    console.log(response.data);
+    //console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error(error as string);
@@ -29,7 +29,7 @@ export const deleteAttendance = async (attendanceId: number) => {
     const response = await instance.delete(
       `/attendances/${attendanceId}?attendanceId=${attendanceId}`,
     );
-    console.log(response);
+    //console.log(response);
     return response.data;
   } catch (error) {
     throw new Error(error as string);
@@ -42,8 +42,7 @@ export const deleteAttendanceQR = async (attendanceId: number) => {
     const response = await instance.delete(
       `/attendances/${attendanceId}/qr?attendanceId=${attendanceId}`,
     );
-    console.log(response);
-
+    //console.log(response);
     return response.data;
   } catch (error) {
     throw new Error(error as string);
@@ -56,7 +55,7 @@ export const getAttendancesStatus = async (attendanceId: number) => {
     const response = await instance.get(
       `/attendances/${attendanceId}/status?attendanceId=${attendanceId}`,
     );
-    console.log(response);
+    //console.log(response);
     return response.data.data;
   } catch (error) {
     throw new Error(error as string);

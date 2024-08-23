@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -7,6 +7,7 @@ import GrayCloseIcon from '/icons/close-gray.svg';
 import { AttendanceData, postAttendance } from '../apis/attendanceRequest';
 import { EventData } from './Attendance';
 import { useMutation } from '@tanstack/react-query';
+import ErrorPopup from '@/components/ui/ErrorPopup';
 
 interface CreateQRModalProps {
   closeFirstModalAndOpenSecond: () => void;
@@ -29,6 +30,7 @@ export const CreateQRModal: React.FC<CreateQRModalProps> = ({
   setAttendUrl,
   setAttendanceId,
 }) => {
+  const [error, setError] = useState<Error | null>(null);
   const borderRef = useRef<HTMLDivElement>(null);
 
   const mutation = useMutation({
@@ -36,30 +38,29 @@ export const CreateQRModal: React.FC<CreateQRModalProps> = ({
     onSuccess: (data) => {
       setAttendUrl(data.data.attendUrl);
       setAttendanceId(data.data.attendanceId);
-      console.log('Attendance registered successfully:', data);
+      //console.log('Attendance registered successfully:', data);
     },
     onError: (error: Error) => {
-      // Handle error (e.g., show error message)
+      setError(error);
       console.error('Error registering attendance:', error);
     },
   });
 
+  //출석 QR 생성
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Data to be sent in the body of the POST request
     const attendanceData: AttendanceData = {
       eventId: selectedEvent.eventId,
       batch: '24-25',
     };
-    console.log(attendanceData);
-    // Trigger the mutation
     mutation.mutate(attendanceData);
     closeFirstModalAndOpenSecond();
   };
 
   return (
     <div>
+      {error && <ErrorPopup />}
       <div className="fixed inset-0 bg-gray-800 bg-opacity-10 flex justify-center items-center">
         <div className="w-[70%] h-[100%] relative flex flex-col justify-center items-center bg-[#ffffff] p-4 rounded-[10px] filter drop-shadow-[0px_4px_10px_rgba(0,0,0,0.15)]">
           <h2 className="top-[78px] left-[60px] absolute font-['NanumSquareRoundEB'] text-[24px] font-extrabold">

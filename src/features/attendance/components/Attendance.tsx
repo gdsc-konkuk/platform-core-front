@@ -11,6 +11,7 @@ import {
 import { ModalManager } from './ModalManager';
 import { useQuery } from '@tanstack/react-query';
 import { getAttendances } from '../apis/attendanceRequest';
+import ErrorPopup from '@/components/ui/ErrorPopup';
 
 dayjs.extend(localeData);
 
@@ -42,7 +43,9 @@ export default function Attendance() {
   });
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {(error as Error).message}</div>;
+  if (error) {
+    return <div>Error: {(error as Error).message}</div>;
+  }
 
   const handleDateClick = (date: dayjs.Dayjs) => {
     data?.data.forEach((event: EventData) => {
@@ -55,8 +58,6 @@ export default function Attendance() {
       }
     });
   };
-
-  //console.log('selectedDate11: ', selectedDate, selectedEvent);
 
   const handleYearChange = (value: string) => {
     const newYear = Number(value);
@@ -74,6 +75,7 @@ export default function Attendance() {
 
   return (
     <div>
+      {error && <ErrorPopup />}
       <div className="flex flex-col items-center">
         <div>
           <h1 className="mb-[3vh] font-['NanumSquareRoundEB'] text-[24px] font-extrabold">

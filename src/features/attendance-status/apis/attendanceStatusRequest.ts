@@ -13,7 +13,7 @@ export const getEvents = async (params: AttendanceData) => {
         params,
       },
     );
-    console.log(response.data);
+    //console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -32,7 +32,7 @@ export const saveAttendances = async (
         params,
       },
     );
-    console.log(response.data);
+    //console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);

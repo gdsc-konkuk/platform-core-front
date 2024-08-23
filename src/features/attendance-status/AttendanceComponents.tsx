@@ -111,7 +111,7 @@ export const AttendanceTable: React.FC<AttendanceTableProps> = ({
                         />
                         <label
                           htmlFor={`check+${memberIndex}${attendanceIndex}`}
-                          className="block"
+                          className="block cursor-pointer"
                         >
                           <img
                             src={
