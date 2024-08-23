@@ -29,10 +29,7 @@ export const saveAttendances = async (
       `/members/${params.batch}/attendances`,
       { attendanceUpdateInfoList },
       {
-        params: {
-          year: params.year,
-          month: params.month, // year와 month는 쿼리 파라미터로 전달
-        },
+        params,
       },
     );
     console.log(response.data);
