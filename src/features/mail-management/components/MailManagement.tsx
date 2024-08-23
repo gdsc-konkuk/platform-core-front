@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import PencilIcon from '/icons/pencil.svg';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -14,19 +14,74 @@ import { Label } from '@/components/ui/label';
 import CheckedIcon from '/icons/checked.svg';
 import UncheckedIcon from '/icons/unchecked.svg';
 import { Input } from '@/components/ui/input';
-
-const mailData = [...Array(15).keys()].map((i) => ({
-  id: i + 1,
-  name: '박성근',
-  email: 'phd0328@gmail.com',
-  time: '2024.10.14(목) 23:30',
-  title: '합격을 축하드립니다.',
-  isChecked: false,
-}));
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getMailList } from '../apis/getMailList';
+import { Mail, MailData } from '../types/mail';
+import { useToast } from '@/components/ui/use-toast';
+import { deleteMail } from '../apis/deleteMail';
+import { translateDate } from '../lib/utils';
 
 export default function MailManagement() {
-  const [mails, setMails] = useState(mailData);
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [isCheckedAll, setIsCheckedAll] = useState(false);
+  const { data, isLoading } = useQuery({
+    queryKey: ['mails'],
+    queryFn: getMailList,
+  });
+  const [mails, setMails] = useState<MailData[]>([]);
+  const { mutateAsync } = useMutation({
+    mutationFn: (id: number) => deleteMail(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mails'] });
+      toast({
+        title: '삭제 완료',
+        description: '해당 메일을 삭제했습니다.',
+      });
+    },
+    onError: () => {
+      toast({
+        variant: 'destructive',
+        title: '삭제 실패',
+        description: '메일 삭제에 실패했습니다. 다시 시도해주세요.',
+      });
+    },
+  });
+
+  const onRemove = async () => {
+    const checkedMails = mails.filter((mail) => mail.isChecked);
+    if (checkedMails.length === 0) {
+      toast({
+        variant: 'destructive',
+        title: '삭제 실패',
+        description: '삭제할 메일을 선택해주세요.',
+      });
+      return;
+    }
+
+    await Promise.all(checkedMails.map((mail) => mutateAsync(mail.id)));
+  };
+
+  useEffect(() => {
+    setMails(
+      data?.data.emailTasks.map((mail: Mail) => ({
+        ...mail,
+        isChecked: false,
+      })) ?? [],
+    );
+  }, [data?.data.emailTasks]);
+
+  useEffect(() => {
+    const isAllChecked = mails.every((mail) => mail.isChecked);
+    setIsCheckedAll(isAllChecked);
+    if (!isAllChecked) {
+      setIsCheckedAll(false);
+    }
+  }, [mails]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -39,7 +94,10 @@ export default function MailManagement() {
             <span>작성하기</span>
           </Button>
         </Link>
-        <Button className="w-[86px] h-[50px] border border-primary bg-white px-[28px] py-[12px] text-primary hover:bg-[#EBEBEF]">
+        <Button
+          className="w-[86px] h-[50px] border border-primary bg-white px-[28px] py-[12px] text-primary hover:bg-[#EBEBEF]"
+          onClick={onRemove}
+        >
           삭제
         </Button>
       </div>
@@ -108,10 +166,22 @@ export default function MailManagement() {
                   />
                 </TableCell>
                 <TableCell>{mail.id}</TableCell>
-                <TableCell>{mail.name}</TableCell>
-                <TableCell>{mail.email}</TableCell>
-                <TableCell>{mail.time}</TableCell>
-                <TableCell>{mail.title}</TableCell>
+                <TableCell>
+                  <div className="flex flex-col gap-4">
+                    {mail.receiverInfos.map((receiver) => (
+                      <span key={receiver.email}>{receiver.name}</span>
+                    ))}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-col gap-4">
+                    {mail.receiverInfos.map((receiver) => (
+                      <span key={receiver.email}>{receiver.email}</span>
+                    ))}
+                  </div>
+                </TableCell>
+                <TableCell>{translateDate(mail.sendAt)}</TableCell>
+                <TableCell>{mail.subject}</TableCell>
               </TableRow>
             ))}
           </TableBody>

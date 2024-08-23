@@ -77,7 +77,7 @@ export default function DateTimePicker({
             )}
           >
             <div className="flex w-full items-center justify-between">
-              <span>{`${hour}시`}</span>
+              <span>{`${hour !== '00' ? hour : 0}시`}</span>
               <img
                 src={isHourOpen ? UpTriangleIcon : DownTriangleIcon}
                 alt="triangle"
@@ -110,9 +110,7 @@ export default function DateTimePicker({
             )}
           >
             <div className="flex w-full items-center justify-between">
-              <span>
-                {Number(minute) < 10 ? `0${minute}분` : `${minute}분`}
-              </span>
+              <span>{minute.padStart(2, '0')}분</span>
               <img
                 src={isMinuteOpen ? UpTriangleIcon : DownTriangleIcon}
                 alt="triangle"

@@ -63,19 +63,17 @@ export default function CreateSessionDialog() {
       setIsOpen(false);
       methods.reset();
     },
+    onError: (error) => {
+      toast({
+        title: '이벤트 생성 실패',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 
   const onSubmit: SubmitHandler<CreateSessionFormFields> = async (data) => {
-    try {
-      await submitSession(data);
-    } catch (error) {
-      if (error instanceof Error)
-        toast({
-          title: '이벤트 생성 실패',
-          description: error.message,
-          variant: 'destructive',
-        });
-    }
+    await submitSession(data);
   };
 
   return (
