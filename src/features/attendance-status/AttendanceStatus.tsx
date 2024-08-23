@@ -22,17 +22,19 @@ interface AttendanceInfo {
   attendanceId: number;
   eventId: number;
   memberId: number;
-  participantId: number;
   attendanceDate: string;
-  attendance: boolean;
+  participantId: number;
+  attended: boolean;
 }
 
 interface Member {
+  actualAttendances: number;
+  attendanceInfoList: AttendanceInfo[];
+  department: string | null; // department는 null일 수 있음
   memberId: number;
   memberName: string;
-  memberRole: string;
-  department: string;
-  attendanceInfoList: AttendanceInfo[];
+  memberRole: string; // 예: "MEMBER"
+  totalAttendances: number;
 }
 
 type ResponseData = {
@@ -41,148 +43,18 @@ type ResponseData = {
   success: boolean;
 };
 
-const testMember: Member[] = [
-  {
-    memberId: 0,
-    memberName: '강조은',
-    memberRole: 'MEMBER',
-    profileImageUrl: null,
-    department: '컴퓨터공학과',
-    attendanceInfoList: [
-      {
-        attendanceId: 1,
-        eventId: 1,
-        memberId: 0,
-        participantId: 1,
-        attendanceDate: '2024-07-03T00:00:00',
-        attendance: true,
-      },
-      {
-        attendanceId: 2,
-        eventId: 2,
-        memberId: 0,
-        participantId: 2,
-        attendanceDate: '2024-07-05T00:00:00',
-        attendance: false,
-      },
-      {
-        attendanceId: 3,
-        eventId: 3,
-        memberId: 0,
-        participantId: 3,
-        attendanceDate: '2024-07-08T00:00:00',
-        attendance: true,
-      },
-    ],
-  },
-  {
-    memberId: 1,
-    memberName: '강조은',
-    memberRole: 'MEMBER',
-    profileImageUrl: null,
-    department: '기술경영학과',
-    attendanceInfoList: [
-      {
-        attendanceId: 1,
-        eventId: 1,
-        memberId: 1,
-        participantId: 4,
-        attendanceDate: '2024-07-03T00:00:00',
-        attendance: true,
-      },
-      {
-        attendanceId: 2,
-        eventId: 2,
-        memberId: 1,
-        participantId: 5,
-        attendanceDate: '2024-07-05T00:00:00',
-        attendance: false,
-      },
-      {
-        attendanceId: 3,
-        eventId: 3,
-        memberId: 1,
-        participantId: 6,
-        attendanceDate: '2024-07-08T00:00:00',
-        attendance: false,
-      },
-    ],
-  },
-  {
-    memberId: 2,
-    memberName: 'ㅇㅇㅇ',
-    memberRole: 'MEMBER',
-    profileImageUrl: null,
-    department: '컴퓨터공학과',
-    attendanceInfoList: [
-      {
-        attendanceId: 1,
-        eventId: 1,
-        memberId: 2,
-        participantId: 7,
-        attendanceDate: '2024-07-03T00:00:00',
-        attendance: true,
-      },
-      {
-        attendanceId: 2,
-        eventId: 2,
-        memberId: 2,
-        participantId: 8,
-        attendanceDate: '2024-07-05T00:00:00',
-        attendance: false,
-      },
-      {
-        attendanceId: 3,
-        eventId: 3,
-        memberId: 2,
-        participantId: 9,
-        attendanceDate: '2024-07-08T00:00:00',
-        attendance: true,
-      },
-    ],
-  },
-  {
-    memberId: 0,
-    memberName: 'ㅎㅎㅎ',
-    memberRole: 'MEMBER',
-    profileImageUrl: null,
-    department: '컴퓨터공학과',
-    attendanceInfoList: [
-      {
-        attendanceId: 1,
-        eventId: 1,
-        memberId: 0,
-        participantId: 1,
-        attendanceDate: '2024-07-03T00:00:00',
-        attendance: true,
-      },
-      {
-        attendanceId: 2,
-        eventId: 2,
-        memberId: 0,
-        participantId: 2,
-        attendanceDate: '2024-07-05T00:00:00',
-        attendance: false,
-      },
-      {
-        attendanceId: 3,
-        eventId: 3,
-        memberId: 0,
-        participantId: 3,
-        attendanceDate: '2024-07-08T00:00:00',
-        attendance: true,
-      },
-    ],
-  },
-];
-
 export default function AttendanceStatus() {
-  const [records, setRecords] = useState<Member[]>(testMember);
   const [isEditing, setIsEditing] = useState(false);
 
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedYear, setSelectedYear] = useState(currentDate.year());
   const [selectedMonth, setSelectedMonth] = useState(currentDate.month());
+
+  const params = {
+    batch: '24-25',
+    year: selectedYear.toString(),
+    month: (selectedMonth + 1).toString(),
+  };
 
   const {
     data: recordsData,
@@ -190,34 +62,14 @@ export default function AttendanceStatus() {
     isLoading,
   } = useQuery<ResponseData>({
     queryKey: ['eventStatus', selectedYear, selectedMonth],
-    queryFn: () =>
-      getEvents(
-        '24-25',
-        selectedYear.toString(),
-        (selectedMonth + 1).toString(),
-      ),
+    queryFn: () => getEvents(params),
   });
 
-  console.log(recordsData);
   if (isLoading) return <div>Loading...</div>;
   if (error) {
+    console.log(error);
     return <div>Error: {(error as Error).message}</div>;
   }
-
-  const handleAttendanceChange = (index: number, listIndex: number) => {
-    const newRecords = [...records];
-    newRecords[index].attendanceInfoList[listIndex].attendance =
-      !newRecords[index].attendanceInfoList[listIndex].attendance;
-    setRecords(newRecords);
-  };
-
-  const getTotalAttendance = (attendanceInfoList: AttendanceInfo[]) => {
-    const totalEvents = attendanceInfoList.length;
-    const attendedEvents = attendanceInfoList.filter(
-      (item) => item.attendance,
-    ).length;
-    return `${attendedEvents} / ${totalEvents}`;
-  };
 
   const handleYearChange = (value: string) => {
     const newYear = Number(value);
@@ -305,30 +157,30 @@ export default function AttendanceStatus() {
                       <th className="px-4 py-2">학과</th>
                       <th className="px-4 py-2">결과</th>
                       <th className="px-4 py-2">역할</th>
-                      {records[0].attendanceInfoList.map((attendanceInfo) => (
-                        <th
-                          key={attendanceInfo.attendanceDate}
-                          className="px-4 py-2"
-                        >
-                          {attendanceInfo.attendanceDate.substring(8, 10)}
-                        </th>
-                      ))}
+                      {recordsData?.data[0]?.attendanceInfoList?.map(
+                        (attendanceInfo) => (
+                          <th
+                            key={attendanceInfo.attendanceDate}
+                            className="px-4 py-2"
+                          >
+                            {attendanceInfo.attendanceDate.substring(8, 10)}
+                          </th>
+                        ),
+                      )}
                     </tr>
                   </thead>
 
                   <tbody className=" border-t">
-                    {records.map((record, index) => (
+                    {recordsData?.data?.map((record, index) => (
                       <tr
                         key={index}
                         className="text-[#333335] font-pretendard text-base font-semibold"
                       >
                         <td className="px-4 py-2">{record.memberName}</td>
                         <td className="px-4 py-2">{record.department}</td>
-                        <td className="px-4 py-2">
-                          {getTotalAttendance(record.attendanceInfoList)}
-                        </td>
+                        <td className="px-4 py-2">{`${record.actualAttendances}/${record.totalAttendances}`}</td>
                         <td className="px-4 py-2">{record.memberRole}</td>
-                        {record.attendanceInfoList.map(
+                        {record?.attendanceInfoList?.map(
                           (attendanceInfo, listIndex) => (
                             <td
                               key={attendanceInfo.attendanceId}
@@ -342,16 +194,14 @@ export default function AttendanceStatus() {
                                       type="checkbox"
                                       id={`check+${index}${listIndex}`}
                                       className="w-[20px] h-[20px] hidden"
-                                      checked={attendanceInfo.attendance}
-                                      onChange={() =>
-                                        handleAttendanceChange(index, listIndex)
-                                      }
+                                      checked={attendanceInfo.attended}
                                     />
+
                                     <label
                                       htmlFor={`check+${index}${listIndex}`}
                                       className="block"
                                     >
-                                      {attendanceInfo.attendance ? (
+                                      {attendanceInfo.attended ? (
                                         <img
                                           src={checkboxFullIcon}
                                           alt="checkboxFullIcon"
@@ -364,7 +214,7 @@ export default function AttendanceStatus() {
                                       )}
                                     </label>
                                   </div>
-                                ) : attendanceInfo.attendance ? (
+                                ) : attendanceInfo.attended ? (
                                   <p className="ml-[4px]">o</p>
                                 ) : (
                                   <p className="ml-[4px]">x</p>
