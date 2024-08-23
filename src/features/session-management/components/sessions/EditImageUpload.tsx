@@ -3,9 +3,13 @@ import PlusIcon from '/icons/plus.svg';
 import DeleteIcon from '/icons/delete.svg';
 import { useFormContext } from 'react-hook-form';
 
-export default function ImageUpload() {
+interface EditImageUploadProps {
+  oldImages: string[];
+}
+
+export default function EditImageUpload({ oldImages }: EditImageUploadProps) {
   const { watch, setValue } = useFormContext();
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [previewImages, setPreviewImages] = useState<string[]>(oldImages);
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
@@ -14,11 +18,11 @@ export default function ImageUpload() {
     setPreviewImages([...previewImages, ...newImages]);
   };
 
-  const handleRemoveImage = (index: number) => {
-    setValue(
-      'array',
-      watch('array').filter((_: File, i: number) => i !== index),
-    );
+  const handleRemoveImage = (src: string, index: number) => {
+    setValue('eventImageKeysToDelete', [
+      ...watch('eventImageKeysToDelete'),
+      src,
+    ]);
     setPreviewImages(previewImages.filter((_, i) => i !== index));
   };
 
@@ -47,7 +51,7 @@ export default function ImageUpload() {
                 src={DeleteIcon}
                 alt="delete"
                 className="absolute -top-3 -right-3 w-6 h-6 cursor-pointer"
-                onClick={() => handleRemoveImage(index)}
+                onClick={() => handleRemoveImage(image, index)}
               />
             </div>
           ))}

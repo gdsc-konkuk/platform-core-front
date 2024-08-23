@@ -11,7 +11,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import DateTimePicker from '@/components/ui/DateTimePicker';
-import ImageUpload from './ImageUpload';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Controller,
@@ -20,70 +19,80 @@ import {
   useForm,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  CreateSessionFormFields,
-  CreateSessionFormSchema,
-} from '../../lib/CreateSessionFormSchema';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createSession } from '../../apis/createSession';
 import { useToast } from '@/components/ui/use-toast';
 import { useState } from 'react';
+import { SessionDetail } from '../../types/session';
+import {
+  EditSessionFormFields,
+  EditSessionFormSchema,
+} from '../../lib/EditSessionFormSchema';
+import EditImageUpload from './EditImageUpload';
+import { editSession } from '../../apis/editSession';
 
-export default function CreateSessionDialog() {
-  const today = new Date();
+interface EditSessionDialogProps {
+  data: SessionDetail;
+}
+
+export default function EditSessionDialog({ data }: EditSessionDialogProps) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
-  const methods = useForm<CreateSessionFormFields>({
-    resolver: zodResolver(CreateSessionFormSchema),
+  const methods = useForm<EditSessionFormFields>({
+    resolver: zodResolver(EditSessionFormSchema),
     defaultValues: {
       array: [],
-      title: '',
-      content: '',
-      startDate: format(today, 'yyyy-MM-dd'),
-      startHour: '0',
-      startMinute: '0',
-      endDate: format(today, 'yyyy-MM-dd'),
-      endHour: '0',
-      endMinute: '0',
+      title: data.title,
+      content: data.content,
+      startDate: data.startAt.split('T')[0],
+      startHour: data.startAt.split('T')[1].split(':')[0],
+      startMinute: data.startAt.split('T')[1].split(':')[1],
+      endDate: data.endAt.split('T')[0],
+      endHour: data.endAt.split('T')[1].split(':')[0],
+      endMinute: data.endAt.split('T')[1].split(':')[1],
+      location: data.location,
+      eventImageKeysToDelete: data.images || [],
     },
   });
 
   const { mutateAsync: submitSession } = useMutation({
-    mutationFn: createSession,
+    mutationFn: (formData: EditSessionFormFields) =>
+      editSession(formData, data.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['sessions'] });
+      queryClient.invalidateQueries({ queryKey: ['session'] });
       toast({
-        title: '이벤트 생성 성공',
-        description: '이벤트가 성공적으로 생성되었습니다.',
+        title: '이벤트 수정 성공',
+        description: '이벤트가 성공적으로 수정되었습니다.',
       });
       setIsOpen(false);
       methods.reset();
     },
-    onError: (error) => {
-      toast({
-        title: '이벤트 생성 실패',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
   });
 
-  const onSubmit: SubmitHandler<CreateSessionFormFields> = async (data) => {
-    await submitSession(data);
+  const onSubmit: SubmitHandler<EditSessionFormFields> = async (data) => {
+    try {
+      await submitSession(data);
+    } catch (error) {
+      if (error instanceof Error)
+        toast({
+          title: '이벤트 수정 실패',
+          description: error.message,
+          variant: 'destructive',
+        });
+    }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
-          className="font-pretendard mt-3 h-[50px] w-[135px] self-end rounded-[10px] border border-primary bg-white px-7 py-3 text-[17px] font-semibold text-primary hover:text-white"
+          className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-black hover:bg-[#BEBEBF]"
           onClick={() => setIsOpen(true)}
         >
-          이벤트 생성
+          수정
         </Button>
       </DialogTrigger>
       <DialogContent className="font-pretendard max-w-[1000px] w-1/2 bg-white px-11 py-14 overflow-y-scroll h-[90vh] scrollbar scrollbar-track-transparent scrollbar-thumb-[#E3E3E3]">
@@ -93,7 +102,9 @@ export default function CreateSessionDialog() {
             <FormProvider {...methods}>
               <form
                 className="flex flex-col gap-12"
-                onSubmit={methods.handleSubmit(onSubmit)}
+                onSubmit={methods.handleSubmit(onSubmit, (errors) => {
+                  console.log(errors);
+                })}
               >
                 <div className="w-full flex flex-col gap-[18px]">
                   <Label
@@ -190,6 +201,31 @@ export default function CreateSessionDialog() {
                       {methods.formState.errors.startDate.message}
                     </span>
                   )}
+                  {methods.formState.errors.endDate && (
+                    <span className="text-[14px] text-[#EA4335]">
+                      {methods.formState.errors.endDate.message}
+                    </span>
+                  )}
+                  {methods.formState.errors.startHour && (
+                    <span className="text-[14px] text-[#EA4335]">
+                      {methods.formState.errors.startHour.message}
+                    </span>
+                  )}
+                  {methods.formState.errors.endHour && (
+                    <span className="text-[14px] text-[#EA4335]">
+                      {methods.formState.errors.endHour.message}
+                    </span>
+                  )}
+                  {methods.formState.errors.startMinute && (
+                    <span className="text-[14px] text-[#EA4335]">
+                      {methods.formState.errors.startMinute.message}
+                    </span>
+                  )}
+                  {methods.formState.errors.endMinute && (
+                    <span className="text-[14px] text-[#EA4335]">
+                      {methods.formState.errors.endMinute.message}
+                    </span>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-[18px]">
@@ -215,7 +251,7 @@ export default function CreateSessionDialog() {
                   <h1 className="font-semibold text-[#171719] text-[18px]">
                     사진
                   </h1>
-                  <ImageUpload />
+                  <EditImageUpload oldImages={data.images} />
                   {methods.formState.errors.array && (
                     <span className="text-[14px] text-[#EA4335]">
                       {methods.formState.errors.array.message}
@@ -263,11 +299,8 @@ export default function CreateSessionDialog() {
                   className="mt-[35px] w-[67px] h-[41px] px-5 py-[9px] self-end"
                   type="submit"
                   disabled={methods.formState.isSubmitting}
-                  onClick={() => {
-                    console.log(methods.getValues());
-                  }}
                 >
-                  {methods.formState.isSubmitting ? '생성 중...' : '생성'}
+                  {methods.formState.isSubmitting ? '수정 중...' : '수정'}
                 </Button>
               </form>
             </FormProvider>

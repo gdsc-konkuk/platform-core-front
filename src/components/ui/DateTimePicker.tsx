@@ -1,7 +1,6 @@
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
   PopoverContent,
@@ -14,22 +13,30 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { format } from 'date-fns';
 import UpTriangleIcon from '/icons/up-triangle.svg';
 import DownTriangleIcon from '/icons/down-triangle.svg';
 
 interface DateTimePickerProps {
   className?: string;
   title?: string;
+  calendar: ReactNode;
+  date: string;
+  hour: string;
+  setHour: (hour: string) => void;
+  minute: string;
+  setMinute: (minute: string) => void;
 }
 
 export default function DateTimePicker({
   className,
   title,
+  calendar,
+  date,
+  hour,
+  setHour,
+  minute,
+  setMinute,
 }: DateTimePickerProps) {
-  const [date, setDate] = useState<Date>();
-  const [hour, setHour] = useState(0);
-  const [minute, setMinute] = useState(0);
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [isHourOpen, setIsHourOpen] = useState(false);
   const [isMinuteOpen, setIsMinuteOpen] = useState(false);
@@ -50,11 +57,7 @@ export default function DateTimePicker({
             )}
           >
             <div className="flex w-full items-center justify-between">
-              <span>
-                {date
-                  ? format(date, 'yyyy-MM-dd')
-                  : format(new Date(), 'yyyy-MM-dd')}
-              </span>
+              <span>{date}</span>
               <img
                 src={isDateOpen ? UpTriangleIcon : DownTriangleIcon}
                 alt="triangle"
@@ -63,14 +66,7 @@ export default function DateTimePicker({
             </div>
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            initialFocus
-          />
-        </PopoverContent>
+        <PopoverContent className="w-auto p-0">{calendar}</PopoverContent>
       </Popover>
       <DropdownMenu onOpenChange={() => setIsHourOpen((prev) => !prev)}>
         <DropdownMenuTrigger asChild>
@@ -81,7 +77,7 @@ export default function DateTimePicker({
             )}
           >
             <div className="flex w-full items-center justify-between">
-              <span>{`${hour}시`}</span>
+              <span>{`${hour !== '00' ? hour : 0}시`}</span>
               <img
                 src={isHourOpen ? UpTriangleIcon : DownTriangleIcon}
                 alt="triangle"
@@ -94,12 +90,11 @@ export default function DateTimePicker({
           {[...Array(24)].map((_, index) => (
             <DropdownMenuItem
               key={index}
-              onClick={() => setHour(index)}
+              onClick={() => setHour(index.toString())}
               className={cn(
                 'text-[16px] text-[#AEAEAE] hover:text-[#171719]',
-                hour === index && 'text-[#171710]',
+                hour === index.toString() && 'text-[#171710]',
               )}
-              onChange={() => setHour(index)}
             >
               {`${index}시`}
             </DropdownMenuItem>
@@ -115,7 +110,7 @@ export default function DateTimePicker({
             )}
           >
             <div className="flex w-full items-center justify-between">
-              <span>{minute < 10 ? `0${minute}분` : `${minute}분`}</span>
+              <span>{minute.padStart(2, '0')}분</span>
               <img
                 src={isMinuteOpen ? UpTriangleIcon : DownTriangleIcon}
                 alt="triangle"
@@ -133,12 +128,11 @@ export default function DateTimePicker({
             return (
               <DropdownMenuItem
                 key={index}
-                onClick={() => setMinute(minuteValue)}
+                onClick={() => setMinute(minuteValue.toString())}
                 className={cn(
                   'text-[16px] text-[#AEAEAE] hover:text-[#171719]',
-                  minute === minuteValue && 'text-[#171710]',
+                  minute === minuteValue.toString() && 'text-[#171710]',
                 )}
-                onChange={() => setMinute(minuteValue)}
               >
                 {`${displayValue}분`}
               </DropdownMenuItem>
