@@ -4,12 +4,19 @@ import { Input } from '@/components/ui/input';
 
 import GrayCloseIcon from '/icons/close-gray.svg';
 
+import { AttendanceData, postAttendance } from '../apis/attendanceRequest';
+import { EventData } from './Attendance';
+import { useMutation } from '@tanstack/react-query';
+
 interface CreateQRModalProps {
   closeFirstModalAndOpenSecond: () => void;
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   numberOfPeople: number;
   setNumberOfPeople: React.Dispatch<React.SetStateAction<number>>;
+  selectedEvent: EventData;
+  setAttendUrl: React.Dispatch<React.SetStateAction<string>>;
+  setAttendanceId: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const CreateQRModal: React.FC<CreateQRModalProps> = ({
@@ -18,8 +25,39 @@ export const CreateQRModal: React.FC<CreateQRModalProps> = ({
   setTitle,
   numberOfPeople,
   setNumberOfPeople,
+  selectedEvent,
+  setAttendUrl,
+  setAttendanceId,
 }) => {
   const borderRef = useRef<HTMLDivElement>(null);
+
+  const mutation = useMutation({
+    mutationFn: (data: AttendanceData) => postAttendance(data),
+    onSuccess: (data) => {
+      setAttendUrl(data.data.attendUrl);
+      setAttendanceId(data.data.attendanceId);
+      console.log('Attendance registered successfully:', data);
+    },
+    onError: (error: Error) => {
+      // Handle error (e.g., show error message)
+      console.error('Error registering attendance:', error);
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Data to be sent in the body of the POST request
+    const attendanceData: AttendanceData = {
+      eventId: selectedEvent.eventId,
+      batch: '24-25',
+    };
+    console.log(attendanceData);
+    // Trigger the mutation
+    mutation.mutate(attendanceData);
+    closeFirstModalAndOpenSecond();
+  };
+
   return (
     <div>
       <div className="fixed inset-0 bg-gray-800 bg-opacity-10 flex justify-center items-center">
@@ -96,7 +134,7 @@ export const CreateQRModal: React.FC<CreateQRModalProps> = ({
               />
             </div>
             <Button
-              onClick={closeFirstModalAndOpenSecond}
+              onClick={(e) => handleSubmit(e)}
               className="absolute bottom-[0px] right-[0px] px-[28px] py-[14px]"
             >
               확인

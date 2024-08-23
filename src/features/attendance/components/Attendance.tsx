@@ -14,9 +14,9 @@ import { getAttendances } from '../apis/attendanceRequest';
 
 dayjs.extend(localeData);
 
-interface EventData {
+export interface EventData {
   eventId: number;
-  attendanceId: number | null | undefined;
+  attendanceId: number | null;
   title: string | null;
   startAt: string;
 }
@@ -28,19 +28,19 @@ type ResponseData = {
 };
 
 export default function Attendance() {
+  const event = { eventId: 0, attendanceId: null, title: '', startAt: '' };
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
-  const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<EventData>(event);
   const [selectedYear, setSelectedYear] = useState(currentDate.year());
   const [selectedMonth, setSelectedMonth] = useState(currentDate.month());
 
-  const { data, error, isLoading } = useQuery<ResponseData>({
+  const { data, error, isLoading, refetch } = useQuery<ResponseData>({
     queryKey: ['events', selectedYear, selectedMonth],
     queryFn: () =>
       getAttendances(selectedYear.toString(), (selectedMonth + 1).toString()),
   });
 
-  console.log(data);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {(error as Error).message}</div>;
 
@@ -48,13 +48,15 @@ export default function Attendance() {
     data?.data.forEach((event: EventData) => {
       const eventDate = dayjs(event.startAt).format('YYYY-MM-DD');
       if (eventDate === date.format('YYYY-MM-DD')) {
-        setSelectedDate(date);
-        setSelectedEvent(event);
+        if (!event.attendanceId) {
+          setSelectedDate(date);
+          setSelectedEvent(event);
+        }
       }
     });
   };
 
-  console.log('selectedDate: ', selectedDate, selectedEvent);
+  //console.log('selectedDate11: ', selectedDate, selectedEvent);
 
   const handleYearChange = (value: string) => {
     const newYear = Number(value);
@@ -135,14 +137,19 @@ export default function Attendance() {
                   const date = new Date(monthEvent.startAt);
                   const day = date.getDate();
                   return day === i + 1 ? (
-                    <div
-                      key={'event' + i}
-                      className="w-[10px] h-[10px] bg-[#9747FF] rounded-[11px]"
-                    ></div>
+                    monthEvent.attendanceId ? (
+                      <div
+                        key={'event' + i}
+                        className="w-[10px] h-[10px] bg-[#9747FF] rounded-[11px]"
+                      ></div>
+                    ) : (
+                      <div
+                        key={'event' + i}
+                        className="w-[10px] h-[10px] bg-[#EA4335] rounded-[11px]"
+                      ></div>
+                    )
                   ) : null;
                 })}
-                {/* <div className="w-[11px] h-[11px] bg-[#9747FF] rounded-[11px]"></div>
-                <div className="w-[10px] h-[10px] bg-[#EA4335] rounded-[11px]"></div> */}
               </div>
             ))}
           </div>
@@ -152,7 +159,8 @@ export default function Attendance() {
           <ModalManager
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
-            attendanceId={selectedEvent?.attendanceId}
+            selectedEvent={selectedEvent}
+            refetch={refetch}
           />
         )}
       </div>
