@@ -56,8 +56,6 @@ export const ModalManager: React.FC<ModalManagerProps> = ({
       {isSecondModalOpen && (
         <QRModal
           selectedDate={selectedDate}
-          title={title}
-          numberOfPeople={numberOfPeople}
           closeSecondModal={closeSecondModal}
           selectedEvent={selectedEvent}
           attendanceId={attendanceId}

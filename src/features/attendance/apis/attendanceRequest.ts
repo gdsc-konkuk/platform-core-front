@@ -7,7 +7,6 @@ export interface AttendanceData {
 
 // 달 별 출석 정보 가져오기
 export const getAttendances = async (year: string, month: string) => {
-  console.log(year, month);
   return await instance
     .get(`/attendances?year=${year}&month=${month}`)
     .then((res) => res.data);
@@ -37,10 +36,10 @@ export const deleteAttendance = async (attendanceId: number) => {
   }
 };
 
-//
-export const postAttendanceQR = async (attendanceId: number) => {
+// delete QR -> QR 만료, 출석 종료
+export const deleteAttendanceQR = async (attendanceId: number) => {
   try {
-    const response = await instance.post(
+    const response = await instance.delete(
       `/attendances/${attendanceId}/qr?attendanceId=${attendanceId}`,
     );
     console.log(response);
@@ -51,15 +50,14 @@ export const postAttendanceQR = async (attendanceId: number) => {
   }
 };
 
-// delete QR
-export const deleteAttendanceQR = async (attendanceId: number) => {
+// 출석현황 조회하기
+export const getAttendancesStatus = async (attendanceId: number) => {
   try {
-    const response = await instance.delete(
-      `/attendances/${attendanceId}/qr?attendanceId=${attendanceId}`,
+    const response = await instance.get(
+      `/attendances/${attendanceId}/status?attendanceId=${attendanceId}`,
     );
     console.log(response);
-
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw new Error(error as string);
   }

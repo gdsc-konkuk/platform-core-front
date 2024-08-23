@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import dayjs from 'dayjs';
 import { EventData } from './Attendance';
 
 import QRCode from './LogoQRcode';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   deleteAttendance,
   deleteAttendanceQR,
+  getAttendancesStatus,
 } from '../apis/attendanceRequest';
 
 interface QRModalProps {
   selectedDate: dayjs.Dayjs;
-  title: string;
   closeSecondModal: () => void;
-  numberOfPeople: number;
   selectedEvent: EventData;
   attendanceId: number;
   attendUrl: string;
 }
+interface IAttendancesStatus {
+  attendanceId: number;
+  total: number;
+  attended: number;
+}
 
 export const QRModal: React.FC<QRModalProps> = ({
   selectedDate,
-  title,
   closeSecondModal,
-  numberOfPeople,
   selectedEvent,
   attendanceId,
   attendUrl,
 }) => {
-  const [currentAttendance, setCurrentAttendance] = useState(0);
-
   const deleteAttendanceMutation = useMutation({
     mutationFn: (attendanceId: number) => deleteAttendance(attendanceId),
     onSuccess: (data) => {
@@ -52,6 +52,15 @@ export const QRModal: React.FC<QRModalProps> = ({
     },
   });
 
+  const { data: attendancesStatus } = useQuery<IAttendancesStatus>({
+    queryKey: ['attendancesStatus', attendanceId],
+    queryFn: () => getAttendancesStatus(attendanceId),
+    refetchInterval: 3000, // 3초마다 refetch
+  });
+
+  useEffect(() => {
+    console.log('attendancesStatus:', attendancesStatus);
+  }, [attendancesStatus]);
   const handleDeleteAttendance = (attendanceId: number) => {
     deleteAttendanceMutation.mutate(attendanceId);
     closeSecondModal();
@@ -74,7 +83,9 @@ export const QRModal: React.FC<QRModalProps> = ({
             <p className="text-[18px] mb-[50px] font-pretendard text-[#535355] font-[400] leading-[20px] tracking-[0.18px]">
               {selectedDate.format('YYYY.MM.DD')}
             </p>
-            <p className="text-[#333335] mb-[66px] font-pretendard text-[24px] font-semibold leading-[36px]">{`${currentAttendance}/${numberOfPeople}`}</p>
+
+            <p className="text-[#333335] mb-[66px] font-pretendard text-[24px] font-semibold leading-[36px]">{`${attendancesStatus?.attended}/${attendancesStatus?.total}`}</p>
+
             <div className="w-[100%] gap-[16px] flex">
               <Button
                 onClick={() => handleDeleteAttendance(attendanceId)}

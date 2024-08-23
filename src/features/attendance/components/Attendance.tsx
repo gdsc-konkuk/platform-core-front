@@ -144,7 +144,7 @@ export default function Attendance() {
                       ></div>
                     ) : (
                       <div
-                        key={'event' + i}
+                        key={'doneEvent' + i}
                         className="w-[10px] h-[10px] bg-[#EA4335] rounded-[11px]"
                       ></div>
                     )
