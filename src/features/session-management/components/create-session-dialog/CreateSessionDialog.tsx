@@ -192,31 +192,6 @@ export default function CreateSessionDialog() {
                       {methods.formState.errors.startDate.message}
                     </span>
                   )}
-                  {methods.formState.errors.endDate && (
-                    <span className="text-[14px] text-[#EA4335]">
-                      {methods.formState.errors.endDate.message}
-                    </span>
-                  )}
-                  {methods.formState.errors.startHour && (
-                    <span className="text-[14px] text-[#EA4335]">
-                      {methods.formState.errors.startHour.message}
-                    </span>
-                  )}
-                  {methods.formState.errors.endHour && (
-                    <span className="text-[14px] text-[#EA4335]">
-                      {methods.formState.errors.endHour.message}
-                    </span>
-                  )}
-                  {methods.formState.errors.startMinute && (
-                    <span className="text-[14px] text-[#EA4335]">
-                      {methods.formState.errors.startMinute.message}
-                    </span>
-                  )}
-                  {methods.formState.errors.endMinute && (
-                    <span className="text-[14px] text-[#EA4335]">
-                      {methods.formState.errors.endMinute.message}
-                    </span>
-                  )}
                 </div>
 
                 <div className="flex flex-col gap-[18px]">
