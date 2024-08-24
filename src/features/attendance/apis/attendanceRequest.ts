@@ -13,9 +13,20 @@ export const getAttendances = async (year: string, month: string) => {
 };
 
 // post 출석 -> qr url 받아오기
-export const postAttendance = async (data: AttendanceData) => {
+export const postNewAttendance = async (data: AttendanceData) => {
   try {
     const response = await instance.post(`/attendances`, data);
+    //console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
+
+// post 재출석 -> qr url 다시 받아오기
+export const postReAttendance = async (data: number) => {
+  try {
+    const response = await instance.post(`/attendances/${data}/qr`, { data });
     //console.log(response.data);
     return response.data;
   } catch (error) {
