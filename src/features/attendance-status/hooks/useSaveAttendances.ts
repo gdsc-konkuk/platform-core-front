@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { saveAttendances } from '../apis/attendanceStatusRequest';
 import { Member } from '../types';
+import { toast } from '@/components/ui/use-toast';
 
 export const useSaveAttendances = (
   recordsData: { data: Member[] } | undefined,
@@ -27,11 +28,18 @@ export const useSaveAttendances = (
         month: (selectedMonth + 1).toString(),
       }),
     onSuccess: () => {
-      alert('저장되었습니다.');
+      toast({
+        title: '저장되었습니다',
+        description: '출석이 성공적으로 저장되었습니다.',
+      });
     },
     onError: (error: Error) => {
       console.error('저장에 실패했습니다:', error);
-      alert('저장에 실패했습니다.');
+      toast({
+        title: '저장에 실패하였습니다',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
 

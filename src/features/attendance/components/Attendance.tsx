@@ -51,10 +51,8 @@ export default function Attendance() {
     data?.data.forEach((event: EventData) => {
       const eventDate = dayjs(event.startAt).format('YYYY-MM-DD');
       if (eventDate === date.format('YYYY-MM-DD')) {
-        if (!event.attendanceId) {
-          setSelectedDate(date);
-          setSelectedEvent(event);
-        }
+        setSelectedDate(date);
+        setSelectedEvent(event);
       }
     });
   };
@@ -81,7 +79,7 @@ export default function Attendance() {
           <h1 className="mb-[3vh] font-['NanumSquareRoundEB'] text-[24px] font-extrabold">
             출석
           </h1>
-          <div className="w-[900px] h-[78vh] pt-4 pl-11 pb-11 pr-11 border border-solid border-[#DADADA] rounded-3xl ">
+          <div className="w-[900px] pt-4 pl-11 pb-11 pr-11 border border-solid border-[#DADADA] rounded-3xl ">
             <div className="flex justify-start items-center mb-4">
               <Select onValueChange={handleYearChange}>
                 <SelectTrigger className="w-[110px] mr-2 text-[#171719] font-[Pretendard] text-[22px] font-[600]">

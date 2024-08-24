@@ -4,7 +4,11 @@ import { Input } from '@/components/ui/input';
 
 import GrayCloseIcon from '/icons/close-gray.svg';
 
-import { AttendanceData, postAttendance } from '../apis/attendanceRequest';
+import {
+  AttendanceData,
+  postNewAttendance,
+  postReAttendance,
+} from '../apis/attendanceRequest';
 import { EventData } from './Attendance';
 import { useMutation } from '@tanstack/react-query';
 import ErrorPopup from '@/components/ui/ErrorPopup';
@@ -33,8 +37,8 @@ export const CreateQRModal: React.FC<CreateQRModalProps> = ({
   const [error, setError] = useState<Error | null>(null);
   const borderRef = useRef<HTMLDivElement>(null);
 
-  const mutation = useMutation({
-    mutationFn: (data: AttendanceData) => postAttendance(data),
+  const newAttendanceMutation = useMutation({
+    mutationFn: (data: AttendanceData) => postNewAttendance(data),
     onSuccess: (data) => {
       setAttendUrl(data.data.attendUrl);
       setAttendanceId(data.data.attendanceId);
@@ -45,16 +49,31 @@ export const CreateQRModal: React.FC<CreateQRModalProps> = ({
       console.error('Error registering attendance:', error);
     },
   });
-
+  const reAttendanceMutation = useMutation({
+    mutationFn: (data: number) => postReAttendance(data),
+    onSuccess: (data) => {
+      setAttendUrl(data.data.attendUrl);
+      setAttendanceId(data.data.attendanceId);
+      //console.log('Attendance re-registered successfully:', data);
+    },
+    onError: (error: Error) => {
+      setError(error);
+      console.error('Error re-registering attendance:', error);
+    },
+  });
   //출석 QR 생성
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const attendanceData: AttendanceData = {
-      eventId: selectedEvent.eventId,
-      batch: '24-25',
-    };
-    mutation.mutate(attendanceData);
+    if (selectedEvent.attendanceId) {
+      reAttendanceMutation.mutate(selectedEvent.attendanceId);
+    } else {
+      const attendanceData: AttendanceData = {
+        eventId: selectedEvent.eventId,
+        batch: '24-25',
+      };
+      newAttendanceMutation.mutate(attendanceData);
+    }
     closeFirstModalAndOpenSecond();
   };
 

@@ -8,6 +8,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import CheckedIcon from '/icons/checked.svg';
+import UncheckedIcon from '/icons/unchecked.svg';
+
 interface SelectYearMonthProps {
   selectedYear: number;
   selectedMonth: number;
@@ -116,8 +119,8 @@ export const AttendanceTable: React.FC<AttendanceTableProps> = ({
                           <img
                             src={
                               attendanceInfo.attended
-                                ? '/icons/checkbox-full.svg'
-                                : '/icons/checkbox-empty.svg'
+                                ? CheckedIcon
+                                : UncheckedIcon
                             }
                             alt="checkbox"
                           />
