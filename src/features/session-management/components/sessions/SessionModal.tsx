@@ -62,7 +62,7 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
             </>
           ) : (
             <>
-              <RetrospectionDialog id={id} />
+              <RetrospectionDialog id={id} data={sessionData.retrospect} />
               <RetrospectionDeleteDialog id={id}>
                 <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-[#BEBEBF] hover:bg-[#BEBEBF] hover:text-white">
                   삭제
