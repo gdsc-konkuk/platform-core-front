@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { BASE_URL_VANILLA } from '@/lib/constants';
 
 export async function loginRequest(id: string, password: string) {
   return axios.post(
-    'http://localhost:8080/login',
+    `${BASE_URL_VANILLA}/login`,
     {
       id,
       password,
