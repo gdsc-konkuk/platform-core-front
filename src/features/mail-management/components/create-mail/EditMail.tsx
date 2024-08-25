@@ -88,17 +88,16 @@ export default function EditMail() {
   };
 
   const removeReciever = () => {
+    const filteredUsers = users.filter((user) => user.isChecked === false);
+    const reindexedUsers = filteredUsers.map((user, index) => ({
+      ...user,
+      id: index + 1,
+    }));
+
+    setUsers(reindexedUsers);
     methods.setValue(
       'recieverInfos',
-      methods.watch('recieverInfos').filter((info) => {
-        return !users.find(
-          (user) => user.name === info.name && user.email === info.email,
-        );
-      }),
-    );
-    setUsers((users) => users.filter((user) => user.isChecked === false));
-    setUsers((users) =>
-      users.map((user, index) => ({ ...user, id: index + 1 })),
+      reindexedUsers.map((user) => ({ name: user.name, email: user.email })),
     );
   };
 
@@ -123,6 +122,7 @@ export default function EditMail() {
   });
 
   const onSubmit: SubmitHandler<CreateMailFormFields> = async (formData) => {
+    console.log(formData);
     await mutateAsync(formData);
   };
 
@@ -354,11 +354,11 @@ export default function EditMail() {
                           type="checkbox"
                           checked={user.isChecked}
                           onChange={(e) => {
-                            setUsers(
-                              users.map((u) =>
-                                u.id === user.id
-                                  ? { ...u, isChecked: e.target.checked }
-                                  : u,
+                            setUsers((prev) =>
+                              prev.map((prevUser) =>
+                                prevUser.id === user.id
+                                  ? { ...prevUser, isChecked: e.target.checked }
+                                  : prevUser,
                               ),
                             );
                           }}

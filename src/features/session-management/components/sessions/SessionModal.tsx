@@ -127,8 +127,8 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
                 sessionData.retrospect.length > 0 && 'text-black',
               )}
             >
-              {sessionData.retrospect.length > 0
-                ? sessionData.retrospect[0].content
+              {sessionData.retrospect && sessionData.retrospect.length > 0
+                ? sessionData.retrospect
                   .split('\n')
                   .map((line: string, index: number) => (
                     <span key={index}>
