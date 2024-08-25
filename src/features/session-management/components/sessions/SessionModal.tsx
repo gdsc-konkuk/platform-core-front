@@ -108,7 +108,16 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
               ))}
             </div>
 
-            <div className="mt-[34px] text-black">{sessionData.content}</div>
+            <div className="mt-[34px] text-black">
+              {sessionData.content
+                .split('\n')
+                .map((line: string, index: number) => (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+            </div>
           </div>
         ) : (
           <div>
@@ -119,7 +128,14 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
               )}
             >
               {sessionData.retrospect.length > 0
-                ? sessionData.retrospect
+                ? sessionData.retrospect[0].content
+                  .split('\n')
+                  .map((line: string, index: number) => (
+                    <span key={index}>
+                      {line}
+                      <br />
+                    </span>
+                  ))
                 : '내용이 없습니다.'}
             </div>
           </div>
