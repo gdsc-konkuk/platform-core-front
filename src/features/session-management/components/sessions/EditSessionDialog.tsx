@@ -23,7 +23,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/components/ui/use-toast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SessionDetail } from '../../types/session';
 import {
   EditSessionFormFields,
@@ -54,7 +54,7 @@ export default function EditSessionDialog({ data }: EditSessionDialogProps) {
       endHour: data.endAt.split('T')[1].split(':')[0],
       endMinute: data.endAt.split('T')[1].split(':')[1],
       location: data.location,
-      eventImageKeysToDelete: data.images || [],
+      eventImagesToDelete: [],
     },
   });
 
@@ -62,7 +62,7 @@ export default function EditSessionDialog({ data }: EditSessionDialogProps) {
     mutationFn: (formData: EditSessionFormFields) =>
       editSession(formData, data.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['session'] });
+      queryClient.invalidateQueries({ queryKey: ['session', 'sessions'] });
       toast({
         title: '이벤트 수정 성공',
         description: '이벤트가 성공적으로 수정되었습니다.',
@@ -84,6 +84,10 @@ export default function EditSessionDialog({ data }: EditSessionDialogProps) {
         });
     }
   };
+
+  useEffect(() => {
+    methods.reset();
+  }, [isOpen, methods]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -19,10 +19,7 @@ export default function EditImageUpload({ oldImages }: EditImageUploadProps) {
   };
 
   const handleRemoveImage = (src: string, index: number) => {
-    setValue('eventImageKeysToDelete', [
-      ...watch('eventImageKeysToDelete'),
-      src,
-    ]);
+    setValue('eventImagesToDelete', [...watch('eventImagesToDelete'), src]);
     setPreviewImages(previewImages.filter((_, i) => i !== index));
   };
 

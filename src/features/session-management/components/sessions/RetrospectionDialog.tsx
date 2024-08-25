@@ -17,10 +17,14 @@ import { useToast } from '@/components/ui/use-toast';
 
 interface RetrospectionDialogProps {
   id: number;
+  data: string;
 }
 
-export default function RetrospectionDialog({ id }: RetrospectionDialogProps) {
-  const [content, setContent] = useState('');
+export default function RetrospectionDialog({
+  id,
+  data,
+}: RetrospectionDialogProps) {
+  const [content, setContent] = useState(data);
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);

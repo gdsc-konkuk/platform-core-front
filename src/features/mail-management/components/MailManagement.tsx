@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import PencilIcon from '/icons/pencil.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
   Table,
@@ -22,6 +22,7 @@ import { deleteMail } from '../apis/deleteMail';
 import { translateDate } from '../lib/utils';
 
 export default function MailManagement() {
+  const naviagate = useNavigate();
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [isCheckedAll, setIsCheckedAll] = useState(false);
@@ -150,7 +151,19 @@ export default function MailManagement() {
 
           <TableBody>
             {mails.map((mail) => (
-              <TableRow key={mail.id} className="h-[60px] px-[34px] py-5">
+              <TableRow
+                key={mail.id}
+                className="h-[60px] px-[34px] py-5 cursor-pointer"
+                onClick={(e) => {
+                  if (
+                    e.target instanceof HTMLElement &&
+                    (e.target.closest('input[type="checkbox"]') ||
+                      e.target.closest('label'))
+                  )
+                    return;
+                  naviagate(`/app/mail/edit/${mail.id}`);
+                }}
+              >
                 <TableCell>
                   {mail.isSent ? null : (
                     <>
@@ -165,15 +178,15 @@ export default function MailManagement() {
                         id={`check-${mail.id}`}
                         type="checkbox"
                         checked={mail.isChecked}
-                        onChange={(e) =>
+                        onChange={(e) => {
                           setMails(
                             mails.map((m) =>
                               m.id === mail.id
                                 ? { ...m, isChecked: e.target.checked }
                                 : m,
                             ),
-                          )
-                        }
+                          );
+                        }}
                         className="hidden"
                       />
                     </>

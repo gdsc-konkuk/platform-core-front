@@ -2,6 +2,7 @@ import AttendanceStatus from '@/features/attendance-status/AttendanceStatus';
 import Attendance from '@/features/attendance/components/Attendance';
 import Login from '@/features/login/components/Login';
 import CreateMail from '@/features/mail-management/components/create-mail/CreateMail';
+import EditMail from '@/features/mail-management/components/create-mail/EditMail';
 import MailManagement from '@/features/mail-management/components/MailManagement';
 import MainLayout from '@/features/main-layout/components/MainLayout';
 import SessionManagement from '@/features/session-management/components/SessionManagement';
@@ -35,6 +36,10 @@ const routes = (isLoggedIn: boolean) => [
           {
             path: 'create',
             element: <CreateMail />,
+          },
+          {
+            path: 'edit/:id',
+            element: <EditMail />,
           },
         ],
       },

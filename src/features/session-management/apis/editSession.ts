@@ -17,7 +17,7 @@ export async function editSession(formData: EditSessionFormFields, id: number) {
         startAt: `${formData.startDate}T${formattedStartHour}:${formattedStartMinute}`,
         endAt: `${formData.endDate}T${formattedEndHour}:${formattedEndMinute}`,
         location: formData.location,
-        eventImageKeysToDelete: formData.eventImageKeysToDelete,
+        eventImagesToDelete: formData.eventImagesToDelete,
       }),
     ],
     { type: 'application/json' },

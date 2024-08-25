@@ -30,10 +30,11 @@ import {
 } from '../../lib/CreateMailFormSchema';
 import { format } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
-import { createMail } from '../../apis/createMail';
+import { editMail } from '../../apis/editMail';
 import { useToast } from '@/components/ui/use-toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getMail } from '../../apis/getMail';
 
 interface User {
   id: number;
@@ -42,7 +43,7 @@ interface User {
   isChecked: boolean;
 }
 
-export default function CreateMail() {
+export default function EditMail() {
   const [users, setUsers] = useState<User[]>([]);
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const [email, setEmail] = useState('');
@@ -53,6 +54,12 @@ export default function CreateMail() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['mail', id],
+    queryFn: () => getMail(Number(id)),
+  });
 
   const methods = useForm<CreateMailFormFields>({
     resolver: zodResolver(CreateMailFormSchema),
@@ -81,26 +88,26 @@ export default function CreateMail() {
   };
 
   const removeReciever = () => {
+    const filteredUsers = users.filter((user) => user.isChecked === false);
+    const reindexedUsers = filteredUsers.map((user, index) => ({
+      ...user,
+      id: index + 1,
+    }));
+
+    setUsers(reindexedUsers);
     methods.setValue(
       'recieverInfos',
-      methods.watch('recieverInfos').filter((info) => {
-        return !users.find(
-          (user) => user.name === info.name && user.email === info.email,
-        );
-      }),
-    );
-    setUsers((users) => users.filter((user) => user.isChecked === false));
-    setUsers((users) =>
-      users.map((user, index) => ({ ...user, id: index + 1 })),
+      reindexedUsers.map((user) => ({ name: user.name, email: user.email })),
     );
   };
 
   const { mutateAsync } = useMutation({
-    mutationFn: createMail,
+    mutationFn: (formData: CreateMailFormFields) =>
+      editMail(formData, Number(id)),
     onSuccess: () => {
       toast({
-        title: '메일 등록 완료',
-        description: '메일을 성공적으로 등록했습니다.',
+        title: '메일 수정 완료',
+        description: '메일을 성공적으로 수정했습니다.',
       });
       queryClient.invalidateQueries({ queryKey: ['mails'] });
       navigate('/app/mail');
@@ -108,13 +115,14 @@ export default function CreateMail() {
     onError: () => {
       toast({
         variant: 'destructive',
-        title: '메일 등록 실패',
-        description: '메일 등록에 실패했습니다. 다시 시도해주세요.',
+        title: '메일 수정 실패',
+        description: '메일 수정에 실패했습니다. 다시 시도해주세요.',
       });
     },
   });
 
   const onSubmit: SubmitHandler<CreateMailFormFields> = async (formData) => {
+    console.log(formData);
     await mutateAsync(formData);
   };
 
@@ -123,6 +131,31 @@ export default function CreateMail() {
       ? setIsCheckedAll(false)
       : setIsCheckedAll(true);
   }, [users]);
+
+  useEffect(() => {
+    const mailData = data?.data;
+    if (!mailData) return;
+    methods.setValue('subject', mailData.subject);
+    methods.setValue('content', mailData.content);
+    methods.setValue('date', mailData.sendAt.split('T')[0]);
+    methods.setValue('hour', mailData.sendAt.split('T')[1].split(':')[0]);
+    methods.setValue('minute', mailData.sendAt.split('T')[1].split(':')[1]);
+    methods.setValue('recieverInfos', mailData.receiverInfos);
+    setUsers(
+      mailData.receiverInfos.map(
+        (info: { name: string; email: string }, index: number) => ({
+          id: index + 1,
+          name: info.name,
+          email: info.email,
+          isChecked: false,
+        }),
+      ),
+    );
+  }, [data, methods]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <FormProvider {...methods}>
@@ -321,11 +354,11 @@ export default function CreateMail() {
                           type="checkbox"
                           checked={user.isChecked}
                           onChange={(e) => {
-                            setUsers(
-                              users.map((u) =>
-                                u.id === user.id
-                                  ? { ...u, isChecked: e.target.checked }
-                                  : u,
+                            setUsers((prev) =>
+                              prev.map((prevUser) =>
+                                prevUser.id === user.id
+                                  ? { ...prevUser, isChecked: e.target.checked }
+                                  : prevUser,
                               ),
                             );
                           }}

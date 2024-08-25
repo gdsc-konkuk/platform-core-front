@@ -263,9 +263,6 @@ export default function CreateSessionDialog() {
                   className="mt-[35px] w-[67px] h-[41px] px-5 py-[9px] self-end"
                   type="submit"
                   disabled={methods.formState.isSubmitting}
-                  onClick={() => {
-                    console.log(methods.getValues());
-                  }}
                 >
                   {methods.formState.isSubmitting ? '생성 중...' : '생성'}
                 </Button>

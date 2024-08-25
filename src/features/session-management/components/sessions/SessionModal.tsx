@@ -62,7 +62,7 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
             </>
           ) : (
             <>
-              <RetrospectionDialog id={id} />
+              <RetrospectionDialog id={id} data={sessionData.retrospect} />
               <RetrospectionDeleteDialog id={id}>
                 <Button className="border border-[#BEBEBF] bg-white px-5 py-[9px] text-[#BEBEBF] hover:bg-[#BEBEBF] hover:text-white">
                   삭제
@@ -108,7 +108,16 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
               ))}
             </div>
 
-            <div className="mt-[34px] text-black">{sessionData.content}</div>
+            <div className="mt-[34px] text-black">
+              {sessionData.content
+                .split('\n')
+                .map((line: string, index: number) => (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+            </div>
           </div>
         ) : (
           <div>
@@ -118,8 +127,15 @@ export default function SessionModal({ id, onClose }: SessionModalProps) {
                 sessionData.retrospect.length > 0 && 'text-black',
               )}
             >
-              {sessionData.retrospect.length > 0
+              {sessionData.retrospect && sessionData.retrospect.length > 0
                 ? sessionData.retrospect
+                  .split('\n')
+                  .map((line: string, index: number) => (
+                    <span key={index}>
+                      {line}
+                      <br />
+                    </span>
+                  ))
                 : '내용이 없습니다.'}
             </div>
           </div>

@@ -6,6 +6,7 @@ import {
   ReactNode,
 } from 'react';
 import axios from 'axios';
+import { BASE_URL } from '@/lib/constants';
 
 const AuthContext = createContext({
   isLoggedIn: false,
@@ -23,7 +24,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     axios
-      .post('http://localhost:8080/api/v1/members/check-login', null, {
+      .post(`${BASE_URL}/members/check-login`, null, {
         withCredentials: true,
         validateStatus: function(status) {
           return status === 200;

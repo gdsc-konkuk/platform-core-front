@@ -10,20 +10,18 @@ const ACCEPTED_IMAGE_TYPES = [
 
 export const CreateSessionFormSchema = z
   .object({
-    array: z
-      .array(
-        z
-          .any()
-          .refine(
-            (file) => file?.size <= MAX_FILE_SIZE,
-            '파일 크기는 5MB 이하로 업로드 가능합니다.',
-          )
-          .refine(
-            (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-            '.jpg, .jpeg, .png, .webp 파일만 업로드 가능합니다.',
-          ),
-      )
-      .min(1, '이미지를 1개 이상 업로드해주세요.'),
+    array: z.array(
+      z
+        .any()
+        .refine(
+          (file) => file?.size <= MAX_FILE_SIZE,
+          '파일 크기는 5MB 이하로 업로드 가능합니다.',
+        )
+        .refine(
+          (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+          '.jpg, .jpeg, .png, .webp 파일만 업로드 가능합니다.',
+        ),
+    ),
     title: z
       .string()
       .min(1, '제목을 입력해주세요.')
