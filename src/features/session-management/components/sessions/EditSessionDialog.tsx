@@ -62,7 +62,7 @@ export default function EditSessionDialog({ data }: EditSessionDialogProps) {
     mutationFn: (formData: EditSessionFormFields) =>
       editSession(formData, data.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['session'] });
+      queryClient.invalidateQueries({ queryKey: ['session', 'sessions'] });
       toast({
         title: '이벤트 수정 성공',
         description: '이벤트가 성공적으로 수정되었습니다.',
