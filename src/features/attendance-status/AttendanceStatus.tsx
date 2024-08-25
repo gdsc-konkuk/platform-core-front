@@ -26,7 +26,7 @@ export default function AttendanceStatus() {
   return (
     <>
       {error && <ErrorPopup />}
-      <div className="flex justify-center">
+      <div className="flex justify-center text-nowrap">
         <div className="flex flex-col items-start">
           <h1 className="mb-[2vh] font-['NanumSquareRoundEB'] text-[24px] font-extrabold ">
             출석 현황
