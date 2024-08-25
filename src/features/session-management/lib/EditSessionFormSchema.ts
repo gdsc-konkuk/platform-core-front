@@ -36,7 +36,7 @@ export const EditSessionFormSchema = z.object({
   endHour: z.string().regex(/^\d{1,2}$/, '시간 형식을 지켜주세요.'),
   endMinute: z.string().regex(/^\d{1,2}$/, '시간 형식을 지켜주세요.'),
   location: z.string().min(1, '장소를 입력해주세요'),
-  eventImageKeysToDelete: z.array(z.string()),
+  eventImagesToDelete: z.array(z.string()),
 });
 
 export type EditSessionFormFields = z.infer<typeof EditSessionFormSchema>;
