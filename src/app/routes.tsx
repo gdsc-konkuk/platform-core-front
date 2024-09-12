@@ -73,6 +73,10 @@ const routes = (isLoggedIn: boolean) => [
         element: <PasswordChange />,
       },
       {
+        index: true,
+        element: <Navigate to="/login" />,
+      },
+      {
         path: '*',
         element: <Navigate to="/login" />,
       },
