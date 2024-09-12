@@ -1,3 +1,5 @@
+import Fail from '@/features/attendance-return/components/Fail';
+import Success from '@/features/attendance-return/components/Success';
 import AttendanceStatus from '@/features/attendance-status/AttendanceStatus';
 import Attendance from '@/features/attendance/components/Attendance';
 import Login from '@/features/login/components/Login';
@@ -6,6 +8,7 @@ import EditMail from '@/features/mail-management/components/create-mail/EditMail
 import MailManagement from '@/features/mail-management/components/MailManagement';
 import MainLayout from '@/features/main-layout/components/MainLayout';
 import SessionManagement from '@/features/session-management/components/SessionManagement';
+import PasswordChange from '@/features/password-change/components/PasswordChange';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const routes = (isLoggedIn: boolean) => [
@@ -58,7 +61,19 @@ const routes = (isLoggedIn: boolean) => [
         element: <Login />,
       },
       {
-        index: true,
+        path: 'success',
+        element: <Success />,
+      },
+      {
+        path: 'fail',
+        element: <Fail />,
+      },
+      {
+        path: 'password-change',
+        element: <PasswordChange />,
+      },
+      {
+        path: '*',
         element: <Navigate to="/login" />,
       },
     ],

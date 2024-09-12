@@ -10,16 +10,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginRequest } from '../apis/loginRequest';
-import { loginFormSchema, LoginFormFields } from '../lib/loginFormSchema';
-import { useAuth } from '@/stores/AuthProvider';
+import { SignUpFormFields, signUpFormSchema } from '../lib/signUpFormSchema';
+import { passwordChangeRequest } from '../apis/passwordChangeRequest';
 
-export default function Login() {
+export default function PasswordChange() {
   const [idCloseHovered, setIdCloseHovered] = useState(false);
   const [passwordCloseHovered, setPasswordCloseHovered] = useState(false);
   const borderRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const { setIsLoggedIn } = useAuth();
 
   const {
     register,
@@ -27,15 +25,14 @@ export default function Login() {
     setError,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormFields>({
-    resolver: zodResolver(loginFormSchema),
+  } = useForm<SignUpFormFields>({
+    resolver: zodResolver(signUpFormSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
+  const onSubmit: SubmitHandler<SignUpFormFields> = async (data) => {
     try {
-      await loginRequest(data.id, data.password);
-      setIsLoggedIn(true);
-      navigate('/app/attendance');
+      await passwordChangeRequest(data.id, data.password);
+      navigate('/login');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 400) {
@@ -137,11 +134,11 @@ export default function Login() {
             className="mt-4 h-[50px] w-full text-[17px] font-semibold"
             disabled={isSubmitting}
           >
-            {isSubmitting ? '로그인 중...' : '로그인'}
+            {isSubmitting ? '비밀번호 변경 중...' : '비밀번호 변경'}
           </Button>
-          <Link to="/password-change">
+          <Link to="/login">
             <Button className="mt-4 w-full h-[50px] text-[17px] font-semibold bg-green-900 hover:bg-green-800">
-              비밀번호 변경
+              돌아가기
             </Button>
           </Link>
           {errors.id && (
