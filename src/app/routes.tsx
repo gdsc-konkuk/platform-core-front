@@ -13,6 +13,20 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 const routes = (isLoggedIn: boolean) => [
   {
+    path: '/attendance-return',
+    element: <Outlet />,
+    children: [
+      {
+        path: 'success',
+        element: <Success />,
+      },
+      {
+        path: 'fail',
+        element: <Fail />,
+      },
+    ],
+  },
+  {
     path: '/app',
     element: isLoggedIn ? <MainLayout /> : <Navigate to="/login" />,
     children: [
@@ -59,14 +73,6 @@ const routes = (isLoggedIn: boolean) => [
       {
         path: 'login',
         element: <Login />,
-      },
-      {
-        path: 'success',
-        element: <Success />,
-      },
-      {
-        path: 'fail',
-        element: <Fail />,
       },
       {
         path: 'password-change',
